@@ -2,32 +2,26 @@
 % labstyle.sty
 % CSMC204 Laboratory File Style
 %
-% Usage:
-%   \documentclass[14pt,letterpaper]{article}
-%   \usepackage{labstyle}
-%
-% Compile with:
-%   lualatex OOP.tex
-%   lualatex OS.tex
+% Compile with LuaLaTeX
 %
 % Project structure:
 %
-%   .
-%   ├── fonts/
-%   │   ├── times.ttf
-%   │   ├── timesbd.ttf
-%   │   ├── timesi.ttf
-%   │   ├── timesbi.ttf
-%   │   ├── cour.ttf
-%   │   ├── courbd.ttf
-%   │   ├── couri.ttf
-%   │   └── courbi.ttf
-%   ├── images/
-%   │   ├── OOP/
-%   │   └── OS/
-%   ├── labstyle.sty
-%   ├── OOP.tex
-%   └── OS.tex
+% .
+% ├── fonts/
+% │   ├── cour.ttf
+% │   ├── courbd.ttf
+% │   ├── couri.ttf
+% │   ├── courbi.ttf
+% │   ├── times.ttf
+% │   ├── timesbd.ttf
+% │   ├── timesi.ttf
+% │   └── timesbi.ttf
+% ├── images/
+% │   ├── OOP/
+% │   └── OS/
+% ├── labstyle.sty
+% ├── OOP.tex
+% └── OS.tex
 %
 % ============================================================
 
@@ -65,162 +59,103 @@
 
 \RequirePackage{needspace}
 
-\RequirePackage{tcolorbox}
+\RequirePackage{xcolor}
 
-\tcbuselibrary{
-    breakable,
-    skins,
-    listings
-}
-
+\RequirePackage{listings}
 
 % ============================================================
 % FONTS
 % ============================================================
-%
-% The exact TTF files are bundled with the project.
-%
-% This means the document does NOT depend on Times New Roman
-% or Courier New being installed on the operating system.
-%
-% LuaLaTeX loads the fonts directly from ./fonts/.
-%
-% ============================================================
 
-
-% ------------------------------------------------------------
 % Main document font
-% ------------------------------------------------------------
-
 \setmainfont[
-    Path = fonts/,
-    UprightFont = times.ttf,
-    BoldFont = timesbd.ttf,
-    ItalicFont = timesi.ttf,
-    BoldItalicFont = timesbi.ttf
+    Path=fonts/,
+    UprightFont=times.ttf,
+    BoldFont=timesbd.ttf,
+    ItalicFont=timesi.ttf,
+    BoldItalicFont=timesbi.ttf
 ]{times.ttf}
 
 
-% ------------------------------------------------------------
-% Monospace / code font
-% ------------------------------------------------------------
-
+% Code font
 \setmonofont[
-    Path = fonts/,
-    UprightFont = cour.ttf,
-    BoldFont = courbd.ttf,
-    ItalicFont = couri.ttf,
-    BoldItalicFont = courbi.ttf
+    Path=fonts/,
+    UprightFont=cour.ttf,
+    BoldFont=courbd.ttf,
+    ItalicFont=couri.ttf,
+    BoldItalicFont=courbi.ttf
 ]{cour.ttf}
 
 
 % ============================================================
 % PAGE GEOMETRY
 % ============================================================
-%
-% The supplied Word document uses:
-%
-%   Paper size : US Letter
-%   Width      : 8.5 in
-%   Height     : 11 in
-%   Left       : 1 in
-%   Right      : 1 in
-%   Top        : 1 in
-%   Bottom     : 1 in
-%
-% ============================================================
 
-% geometry is already configured above.
-% These values are repeated here as documentation only.
+% US Letter:
+%
+%   8.5 x 11 inches
+%
+% 1 inch margins on all sides.
 
 
 % ============================================================
-% DEFAULT DOCUMENT TYPOGRAPHY
-% ============================================================
-%
-% The Word document's Normal style uses 14 pt text.
-%
-% We use a 16 pt baseline skip as the default approximation of
-% the document's line spacing.
-%
-% Paragraphs have no first-line indentation.
-%
+% DEFAULT TEXT
 % ============================================================
 
 \AtBeginDocument{
 
+    % 14 pt Times New Roman
     \fontsize{14pt}{16pt}\selectfont
 
+    % No first-line indentation
     \setlength{\parindent}{0pt}
 
+    % Paragraph spacing
     \setlength{\parskip}{8pt}
-
 }
 
 
 % ============================================================
-% PAGE FOOTER
+% FOOTER
 % ============================================================
-%
-% The supplied document has:
-%
-%   CSMC204              PAGE              25BTCS006
-%
-% with the three elements aligned:
-%
-%   LEFT                 CENTER                 RIGHT
-%
-% ============================================================
+
+% Subject code command (default: CSMCXXXX)
+\newcommand{\subjectcode}{CSMCXXXX}
 
 \pagestyle{fancy}
 
 \fancyhf{}
 
+\fancyfoot[L]{\subjectcode}
 
-% Left footer
-\fancyfoot[L]{CSMC204}
-
-
-% Center footer
 \fancyfoot[C]{\thepage}
 
-
-% Right footer
 \fancyfoot[R]{25BTCS006}
 
-
-% No horizontal rules
 \renewcommand{\headrulewidth}{0pt}
 
 \renewcommand{\footrulewidth}{0pt}
 
-
-% Footer position
 \setlength{\footskip}{0.5in}
 
 
 % ============================================================
 % ASSIGNMENT TITLE
 % ============================================================
-%
+
 % Usage:
 %
-%   \assignmenttitle
-%       {LAB ASSIGNMENT 3}
-%       {INTRODUCTION TO OBJECT AND CLASSES}
-%
-% Produces a centered, bold title.
-%
-% ============================================================
+% \assignmenttitle
+%     {LAB ASSIGNMENT 1}
+%     {BASICS REVISION}
 
 \NewDocumentCommand{\assignmenttitle}{m m}
 {
     \begin{center}
 
-        \textbf{#1}
-
+        \textbf{#1}\\[10pt]
         \textbf{#2}
-
+        \vspace{15pt}
     \end{center}
 }
 
@@ -228,174 +163,172 @@
 % ============================================================
 % AIM
 % ============================================================
-%
+
 % Usage:
 %
-%   \aim{
-%       To write C++ programs utilizing concepts of
-%       classes and objects.
-%   }
-%
-% ============================================================
+% \aim{
+%     To write simple programs for revising basic C/C++ concepts.
+% }
 
 \NewDocumentCommand{\aim}{m}
 {
-    \textbf{AIM:} #1
+    \textbf{Aim:} #1
     \par
+    \vspace{15pt}
 }
 
+% ============================================================
+% APPARATUS
+% ============================================================
 
-% ============================================================
-% PROGRAMS LABEL
-% ============================================================
-%
 % Usage:
 %
-%   \programs
-%
+% \appr{
+%     Computer System, USB Drive
+% }
+
+\NewDocumentCommand{\appr}{m}
+{
+    \textbf{Apparatus Required:} #1
+    \par
+    \vspace{15pt}
+}
+
 % ============================================================
+% PROGRAMS
+% ============================================================
+
+% Usage:
+%
+% \programs
 
 \newcommand{\programs}
 {
     \textbf{Programs:}
     \par
+    \vspace{15pt}
 }
 
 
 % ============================================================
 % PROGRAM DESCRIPTION
 % ============================================================
-%
-% Program descriptions in the supplied document are bold.
-%
+
 % Usage:
 %
-%   \program{
-%       Write a program that demonstrates ...
-%   }
-%
-% ============================================================
+% \program{
+%     Write a program to rotate a matrix 90 degrees clockwise in C++.
+% }
 
 \NewDocumentCommand{\program}{m}
 {
     \needspace{3\baselineskip}
-
     \textbf{#1}
-
     \par
+    \vspace{10pt}
 }
 
 
 % ============================================================
 % CODE LABEL
 % ============================================================
-%
+
 % Usage:
 %
-%   \codelabel
-%
-% ============================================================
+% \codelabel
 
 \newcommand{\codelabel}
 {
     \textbf{Code:}
+    \vspace{15pt}
     \par
 }
 
 
 % ============================================================
-% CODE ENVIRONMENT
+% CODE BLOCK
 % ============================================================
 %
-% The supplied Word document uses:
+% The original Word document uses:
 %
 %   Font       : Courier New
-%   Size       : 14 pt
-%   Background : white
-%   Border     : black
-%   Border     : thin
-%   Corners    : square
+%   Size       : 12 pt
+%   Background : White
+%   Border     : Black
+%   Border     : Thin
 %
-% A tcolorbox listing is used so that C++ source code can be
-% inserted directly without escaping characters such as:
+% listings is used here instead of tcolorbox.
 %
-%   #
-%   %
-%   &
-%   _
-%   {
-%   }
+% This is deliberately simple and robust.
+%
+% ============================================================
+
+
+\lstdefinestyle{labcode}{%
+    basicstyle=\ttfamily\fontsize{12pt}{16pt}\selectfont,%
+    % No syntax highlighting
+    keywordstyle={},%
+    commentstyle={},%
+    stringstyle={},%
+    % White background
+    backgroundcolor=\color{white},%
+    % Thin black border
+    frame=single,%
+    rulecolor=\color{black},%
+    framerule=0.5pt,%
+    % No line numbers
+    numbers=none,%
+    % Preserve spaces
+    keepspaces=true,%
+    % Allow long source lines to wrap
+    breaklines=true,%
+    breakatwhitespace=false,%
+    % Use the full available width
+    columns=fullflexible,%
+    % Keep indentation
+    showstringspaces=false,%
+    % Don't add extra vertical margins
+    aboveskip=0pt,%
+    belowskip=0pt,%
+    % Small internal margins
+    xleftmargin=0pt,%
+    xrightmargin=0pt,%
+    % Don't insert captions
+    captionpos=b%
+}
+
+
+% Code environment
 %
 % Usage:
 %
-%   \begin{code}
-%   #include <iostream>
+% \begin{code}
+% #include <iostream>
+% using namespace std;
 %
-%   int main()
-%   {
-%       return 0;
-%   }
-%   \end{code}
-%
-% ============================================================
+% int main() {
+%     return 0;
+% }
+% \end{code}
 
-\newtcblisting{code}
+\lstnewenvironment{code}
 {
-    breakable,
-
-    enhanced,
-
-    colback=white,
-
-    colframe=black,
-
-    boxrule=0.5pt,
-
-    arc=0pt,
-
-    left=6pt,
-
-    right=6pt,
-
-    top=5pt,
-
-    bottom=5pt,
-
-    boxsep=0pt,
-
-    before skip=0pt,
-
-    after skip=0pt,
-
-    listing only,
-
-    listing options={
-        basicstyle=
-            \ttfamily
-            \fontsize{14pt}{16pt}
-            \selectfont,
-
-        columns=fullflexible,
-
-        keepspaces=true,
-
-        breaklines=true
-    }
+    \lstset{style=labcode}
 }
+{}
 
 
 % ============================================================
 % OUTPUT LABEL
 % ============================================================
-%
+
 % Usage:
 %
-%   \outputlabel
-%
-% ============================================================
+% \outputlabel
 
 \newcommand{\outputlabel}
 {
+    \needspace{3\baselineskip}
     \textbf{Output:}
     \par
 }
@@ -404,16 +337,14 @@
 % ============================================================
 % OUTPUT IMAGE
 % ============================================================
-%
+
 % Usage:
 %
-%   \outputimage{images/OOP/output01.png}
+% \outputimage{images/OOP/output01.png}
 %
 % Optional width:
 %
-%   \outputimage[0.60\linewidth]{images/OOP/output01.png}
-%
-% ============================================================
+% \outputimage[0.60\linewidth]{images/OOP/output01.png}
 
 \NewDocumentCommand{\outputimage}{O{0.75\linewidth} m}
 {
@@ -426,16 +357,50 @@
     \end{center}
 }
 
+% ============================================================
+% CONCLUSION
+% ============================================================
+
+% Usage:
+%
+% \concl{
+%     Programs were written successfully.
+% }
+
+\NewDocumentCommand{\concl}{m}
+{
+    \vspace{30pt}
+    \textbf{Conclusion:} #1
+    \par
+    \vspace{15pt}
+    \newpage
+}
+
+% ============================================================
+% RESULT
+% ============================================================
+
+% Usage:
+%
+% \resul{
+%     Programs were written successfully.
+% }
+
+\NewDocumentCommand{\resul}{m}
+{
+    \textbf{Result:} #1
+    \par
+    \vspace{15pt}
+}
+
 
 % ============================================================
 % GENERIC BOLD LABEL
 % ============================================================
+
+% Usage:
 %
-% Useful for things such as:
-%
-%   \sectionlabel{Result:}
-%
-% ============================================================
+% \sectionlabel{Result:}
 
 \NewDocumentCommand{\sectionlabel}{m}
 {
@@ -445,7 +410,7 @@
 
 
 % ============================================================
-% END OF STYLE FILE
+% END
 % ============================================================
 
 \endinput

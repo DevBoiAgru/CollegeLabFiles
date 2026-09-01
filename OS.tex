@@ -1,0 +1,593 @@
+\documentclass[14pt,letterpaper]{article}
+
+\usepackage{labstyle}
+
+\renewcommand{\subjectcode}{CSMC205}
+
+\begin{document}
+
+\assignmenttitle
+    {LAB ASSIGNMENT - 01}
+    {WINDOWS INSTALLATION}
+
+\aim{To install the Windows operating system on a computer system.}
+
+\appr{Computer System, USB Drive}
+
+\sectionlabel{Procedure:}
+
+\begin{itemize}
+    \item Create a bootable USB drive using the Windows ISO file.
+    \item Insert the bootable USB into the computer.
+    \item Restart the computer and enter the BIOS boot menu.
+    \item Set the USB drive as the first boot device.
+    \item Save the settings and restart the system.
+    \item Select the language, time, and keyboard preferences, then click Install Now.
+    \item Enter the product key or choose I don't have a product key.
+    \item Select the desired Windows edition and accept the license terms.
+    \item Choose Custom: Install Windows only and select the target drive or partition.
+    \item Wait for the installation to complete and allow the system to restart.
+    \item Complete the initial setup by creating a user account and configuring basic settings.
+    \item Verify that Windows has been installed successfully and the desktop loads correctly.
+\end{itemize}
+
+\concl{The Windows operating system was installed successfully on the computer system. The installation process completed without errors and the system booted into Windows successfully.
+}
+
+\assignmenttitle
+    {LAB ASSIGNMENT - 02}
+    {UNIX SYSCALLS}
+
+\aim{To implement C++ programs using different UNIX system calls and demonstrate their purpose.}
+
+\appr{Computer System with LINUX/UNIX OS and a C++ compiler installed.}
+
+\sectionlabel{Theory:}
+A system call is a function provided by the OS through which a user program requests a service from the kernel. It acts as a bridge between user applications and the OS, allowing programs to perform tasks such as creating files, reading data, managing processes, and accessing hardware resources without directly accessing sensitive resources.
+
+\sectionlabel{Process System Calls:}
+\begin{itemize}
+\item \textbf{fork:} Creates a new child process by duplicating the calling parent process.
+\item \textbf{getpid:} Returns the process ID (PID) of the calling process.
+\item \textbf{wait:} Suspends execution of the calling process until one of its child processes terminates.
+\item \textbf{exec:} Replaces the current process with a new process image from a specified executable file.
+\item \textbf{exit:} Terminates the calling process normally and returns a status code to the parent.
+\end{itemize}
+
+\sectionlabel{Directory System Calls:}
+\begin{itemize}
+\item \textbf{opendir:} Opens a directory stream for reading directory entries.
+\item \textbf{readdir:} Reads the next directory entry from an open directory stream.
+\item \textbf{stat:} Retrieves information about a file such as size, permissions, and modification time.
+\item \textbf{close:} Closes a file and releases the associated system resources.
+\end{itemize}
+
+\programs
+
+\program{
+    2.1. Program 1 - Process System Calls (fork, getpid, wait, exec, exit):
+}
+
+\codelabel
+
+\begin{code}
+#include <unistd.h>
+#include <iostream>
+#include <sys/wait.h>
+
+int main() {
+    pid_t pid = fork();
+    if (pid == 0) {
+        std::cout << "Child PID: " << getpid() << std::endl;
+        execlp("ls", "ls", NULL);
+        exit(1);
+    } else {
+        wait(NULL);
+        std::cout << "Parent PID: " << getpid() << std::endl;
+    }
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OS/image1.png}
+
+\program{
+    2.2 Program 2 - Directory System Calls (opendir, readdir, stat, close):
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <dirent.h>
+
+int main() {
+    struct stat fileInfo;
+    stat(".", &fileInfo);
+    int fd = open(".", O_RDONLY);
+    close(fd);
+
+    DIR *dir = opendir(".");
+    struct dirent *entry = readdir(dir);
+
+    while (entry != NULL) {
+        std::cout << entry->d_name << std::endl;
+        entry = readdir(dir);
+    }
+    closedir(dir);
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OS/image2.png}
+
+\concl{The programs demonstrated the use of different system calls to carry out different functions successfully.}
+
+\iffalse
+\assignmenttitle
+    {LAB ASSIGNMENT - 03}
+    {CPU SCHEDULING ALGORITHMS}
+
+\aim{
+    To implement multiple types of CPU scheduling algorithms.
+}
+
+\appr{Computer System with a C++ compiler installed.}
+
+\programs
+
+\program{
+    Process Class:
+}
+
+\codelabel
+
+\begin{code}
+class Process {
+    unsigned int m_id;
+    int m_arrivalTime;
+    int m_burstTime;
+    int m_remainingCpuTime;
+    int m_waitingTime{-1};
+    int m_turnaroundTime{-1};
+    int m_completionTime{-1};
+    void setProcessComplete(int compTime) {
+        m_completionTime = compTime;
+        // Process is completed we can calculate waiting time and turnaround time now
+        m_turnaroundTime = m_completionTime - m_arrivalTime;
+        m_waitingTime = m_turnaroundTime - m_burstTime;
+    }
+    public:
+        Process(unsigned int id, int arrTime, int burstTime) : 
+            m_id(id), 
+            m_arrivalTime(arrTime), 
+            m_burstTime(burstTime),
+            m_remainingCpuTime(burstTime) {}
+        unsigned int getPID() const {
+            return m_id;
+        }
+        int getArrivalTime() const {
+            return m_arrivalTime;
+        }
+        int getBurstTime() const {
+            return m_burstTime;
+        }
+        int getRemCPUTime() const {
+            return m_remainingCpuTime;
+        }
+        int getCompletionTime() const {
+            return m_completionTime;
+        }
+        int getTurnaroundTime() const {
+            return m_turnaroundTime;
+        }
+        int getWaitingTime() const {
+            return m_waitingTime;
+        }
+        bool isCompleted() const {
+            return m_remainingCpuTime <= 0;
+        }
+        void execute(int time) {
+            m_remainingCpuTime -= 1;
+            if (this->isCompleted()) {
+                setProcessComplete(time);
+            }
+        }
+};
+\end{code}
+
+\program{
+    First Come First Serve Scheduler:
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include "proc.hpp"
+int main() {
+    int n;
+    std::cout << "Enter number of processes: ";
+    std::cin >> n;
+    std::vector<Process> processes;
+    for (int i = 1; i <=n; i++) {
+        int arrTime, burstTime;
+        std::cout << "Enter details for Process " << i << std::endl;
+        std::cout << "Enter Arrival time: ";
+        std::cin >> arrTime;
+        std::cout << "Enter Burst time: ";
+        std::cin >> burstTime;
+        processes.emplace_back(i, arrTime, burstTime);
+    }
+    // Sort in order of arrival time
+    std::sort(processes.begin(), processes.end(), 
+        [](const Process& a, const Process& b) {
+            // If arrival times are same prefer lower PID
+            if (a.getArrivalTime() == b.getArrivalTime()) {
+                return a.getPID() < b.getPID();
+            }
+            return a.getArrivalTime() < b.getArrivalTime();
+        }
+    );
+    // Start executing programs until each completes and record completion times
+    int time = 0;
+    for (Process& process: processes) {
+        // Check if CPU is idle right now, if it is, skip to the arrival time
+        if (process.getArrivalTime() > time) {
+            time = process.getArrivalTime();
+        }
+        int bt = process.getBurstTime();
+        
+        for (int i = 0; i < bt; i++) {
+            time++;
+            process.execute(time);
+        }
+    }
+    // Display statistics
+    std::cout << "Processing completed!\n";
+    std::cout << "AT\t|\tBT\t|\tCT\t|\tTAT\t|\tWT\n";
+    double avgTAT{0.0}, avgWT{0.0};
+    for (const Process& process: processes) {
+        std::cout 
+            << process.getArrivalTime() << "\t|\t"
+            << process.getBurstTime() << "\t|\t"
+            << process.getCompletionTime() << "\t|\t"
+            << process.getTurnaroundTime() << "\t|\t"
+            << process.getWaitingTime()
+            << std::endl;
+        avgTAT += static_cast<double>(process.getTurnaroundTime()) / processes.size();
+        avgWT += static_cast<double>(process.getWaitingTime()) / processes.size();
+    }
+    std::cout << "Average Turnaround Time: " << avgTAT << '\n'
+        << "Average Waiting Time: " << avgWT << std::endl;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OS/image3.png}
+
+\program{
+    Shortest Job First Scheduler:
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include "proc.hpp"
+int main() {
+    int n;
+    std::cout << "Enter number of processes: ";
+    std::cin >> n;
+    std::vector<Process> processes;
+    for (int i = 1; i <= n; i++) {
+        int arrTime, burstTime;
+        std::cout << "Enter details for Process " << i << std::endl;
+        std::cout << "Enter Arrival time: ";
+        std::cin >> arrTime;
+        std::cout << "Enter Burst time: ";
+        std::cin >> burstTime;
+        processes.emplace_back(i, arrTime, burstTime);
+    }
+    int time = 0;
+    int completed = 0;
+    while (completed < n) {
+        // Sort available processes by burst time
+        std::sort(processes.begin(), processes.end(),
+            [time](const Process& a, const Process& b) {
+                bool aAvailable = a.getArrivalTime() <= time && !a.isCompleted();
+                bool bAvailable = b.getArrivalTime() <= time && !b.isCompleted();
+                if (aAvailable != bAvailable)
+                    return aAvailable > bAvailable;
+                if (aAvailable && bAvailable) {
+                    if (a.getBurstTime() == b.getBurstTime())
+                        return a.getPID() < b.getPID();
+                    return a.getBurstTime() < b.getBurstTime();
+                }
+                return a.getArrivalTime() < b.getArrivalTime();
+            }
+        );
+        // If nothing has arrived, jump to the next arrival
+        if (processes[0].getArrivalTime() > time) {
+            time = processes[0].getArrivalTime();
+            continue;
+        }
+        // Run shortest available process
+        Process& process = processes[0];
+        while (!process.isCompleted()) {
+            ++time;
+            process.execute(time);
+        }
+        ++completed;
+    }
+    std::cout << "Processing completed!\n";
+    std::cout << "AT\t|\tBT\t|\tCT\t|\tTAT\t|\tWT\n";
+    double avgTAT{0.0}, avgWT{0.0};
+    for (const Process& process : processes) {
+        std::cout
+            << process.getArrivalTime() << "\t|\t"
+            << process.getBurstTime() << "\t|\t"
+            << process.getCompletionTime() << "\t|\t"
+            << process.getTurnaroundTime() << "\t|\t"
+            << process.getWaitingTime()
+            << std::endl;
+        avgTAT += static_cast<double>(process.getTurnaroundTime()) / processes.size();
+        avgWT += static_cast<double>(process.getWaitingTime()) / processes.size();
+    }
+    std::cout << "Average Turnaround Time: " << avgTAT << '\n'
+              << "Average Waiting Time: " << avgWT << std::endl;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OS/image4.png}
+
+\program{
+    Longest Job First Scheduler:
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include "proc.hpp"
+int main() {
+    int n;
+    std::cout << "Enter number of processes: ";
+    std::cin >> n;
+    std::vector<Process> processes;
+    for (int i = 1; i <= n; i++) {
+        int arrTime, burstTime;
+        std::cout << "Enter details for Process " << i << std::endl;
+        std::cout << "Enter Arrival time: ";
+        std::cin >> arrTime;
+        std::cout << "Enter Burst time: ";
+        std::cin >> burstTime;
+        processes.emplace_back(i, arrTime, burstTime);
+    }
+    int time = 0;
+    int completed = 0;
+    while (completed < n) {
+        // Sort available processes by burst time (longest first)
+        std::sort(processes.begin(), processes.end(),
+            [time](const Process& a, const Process& b) {
+                bool aAvailable = a.getArrivalTime() <= time && !a.isCompleted();
+                bool bAvailable = b.getArrivalTime() <= time && !b.isCompleted();
+                if (aAvailable != bAvailable)
+                    return aAvailable > bAvailable;
+                if (aAvailable && bAvailable) {
+                    if (a.getBurstTime() == b.getBurstTime())
+                        return a.getPID() < b.getPID();
+                    return a.getBurstTime() > b.getBurstTime();
+                }
+                return a.getArrivalTime() < b.getArrivalTime();
+            }
+        );
+        // If nothing has arrived, jump to the next arrival
+        if (processes[0].getArrivalTime() > time) {
+            time = processes[0].getArrivalTime();
+            continue;
+        }
+        // Run longest available process completely
+        Process& process = processes[0];
+        while (!process.isCompleted()) {
+            ++time;
+            process.execute(time);
+        }
+        ++completed;
+    }
+    std::cout << "Processing completed!\n";
+    std::cout << "AT\t|\tBT\t|\tCT\t|\tTAT\t|\tWT\n";
+    double avgTAT{0.0}, avgWT{0.0};
+    for (const Process& process : processes) {
+        std::cout
+            << process.getArrivalTime() << "\t|\t"
+            << process.getBurstTime() << "\t|\t"
+            << process.getCompletionTime() << "\t|\t"
+            << process.getTurnaroundTime() << "\t|\t"
+            << process.getWaitingTime()
+            << std::endl;
+        avgTAT += static_cast<double>(process.getTurnaroundTime()) / processes.size();
+        avgWT += static_cast<double>(process.getWaitingTime()) / processes.size();
+    }
+    std::cout << "Average Turnaround Time: " << avgTAT << '\n'
+              << "Average Waiting Time: " << avgWT << std::endl;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OS/image5.png}
+
+\program{
+    Shortest Running Task First Scheduler (Preemptive):
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include "proc.hpp"
+int main() {
+    int n;
+    std::cout << "Enter number of processes: ";
+    std::cin >> n;
+    std::vector<Process> processes;
+    for (int i = 1; i <= n; i++) {
+        int arrTime, burstTime;
+        std::cout << "Enter details for Process " << i << std::endl;
+        std::cout << "Enter Arrival time: ";
+        std::cin >> arrTime;
+        std::cout << "Enter Burst time: ";
+        std::cin >> burstTime;
+        processes.emplace_back(i, arrTime, burstTime);
+    }
+    int time = 0;
+    int completed = 0;
+    while (completed < n) {
+        // Find the process with the shortest remaining time
+        Process* process = nullptr;
+        for (Process& p : processes) {
+            if (!p.isCompleted() && p.getArrivalTime() <= time) {
+                if (process == nullptr ||
+                    p.getRemCPUTime() < process->getRemCPUTime() ||
+                    (p.getRemCPUTime() == process->getRemCPUTime() &&
+                     p.getPID() < process->getPID())) {
+                    process = &p;
+                }
+            }
+        }
+        // Nothing has arrived yet
+        if (process == nullptr) {
+            int nextArrival = INT_MAX;
+            for (const Process& p : processes) {
+                if (!p.isCompleted())
+                    nextArrival = std::min(nextArrival, p.getArrivalTime());
+            }
+            time = nextArrival;
+            continue;
+        }
+        // Execute for ONE time unit
+        ++time;
+        process->execute(time);
+        if (process->isCompleted())
+            ++completed;
+    }
+    std::cout << "Processing completed!\n";
+    std::cout << "AT\t|\tBT\t|\tCT\t|\tTAT\t|\tWT\n";
+    double avgTAT{0.0}, avgWT{0.0};
+    for (const Process& process : processes) {
+        std::cout
+            << process.getArrivalTime() << "\t|\t"
+            << process.getBurstTime() << "\t|\t"
+            << process.getCompletionTime() << "\t|\t"
+            << process.getTurnaroundTime() << "\t|\t"
+            << process.getWaitingTime()
+            << std::endl;
+        avgTAT += static_cast<double>(process.getTurnaroundTime()) / processes.size();
+        avgWT += static_cast<double>(process.getWaitingTime()) / processes.size();
+    }
+    std::cout << "Average Turnaround Time: " << avgTAT << '\n'
+              << "Average Waiting Time: " << avgWT << std::endl;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OS/image6.png}
+
+\program{
+    Longest Running Task First Scheduler (Preemptive):
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <climits>
+#include "proc.hpp"
+int main() {
+    int n;
+    std::cout << "Enter number of processes: ";
+    std::cin >> n;
+    std::vector<Process> processes;
+    for (int i = 1; i <= n; i++) {
+        int arrTime, burstTime;
+        std::cout << "Enter details for Process " << i << std::endl;
+        std::cout << "Enter Arrival time: ";
+        std::cin >> arrTime;
+        std::cout << "Enter Burst time: ";
+        std::cin >> burstTime;
+        processes.emplace_back(i, arrTime, burstTime);
+    }
+    int time = 0;
+    int completed = 0;
+    while (completed < n) {
+        // Find the process with the longest remaining time
+        Process* process = nullptr;
+        for (Process& p : processes) {
+            if (!p.isCompleted() && p.getArrivalTime() <= time) {
+                if (process == nullptr ||
+                    p.getRemCPUTime() > process->getRemCPUTime() ||
+                    (p.getRemCPUTime() == process->getRemCPUTime() &&
+                     p.getPID() < process->getPID())) {
+                    process = &p;
+                }
+            }
+        }
+        // Nothing has arrived yet
+        if (process == nullptr) {
+            int nextArrival = INT_MAX;
+            for (const Process& p : processes) {
+                if (!p.isCompleted())
+                    nextArrival = std::min(nextArrival, p.getArrivalTime());
+            }
+            time = nextArrival;
+            continue;
+        }
+        // Execute for ONE time unit
+        ++time;
+        process->execute(time);
+        if (process->isCompleted())
+            ++completed;
+    }
+    std::cout << "Processing completed!\n";
+    std::cout << "AT\t|\tBT\t|\tCT\t|\tTAT\t|\tWT\n";
+    double avgTAT{0.0}, avgWT{0.0};
+    for (const Process& process : processes) {
+        std::cout
+            << process.getArrivalTime() << "\t|\t"
+            << process.getBurstTime() << "\t|\t"
+            << process.getCompletionTime() << "\t|\t"
+            << process.getTurnaroundTime() << "\t|\t"
+            << process.getWaitingTime()
+            << std::endl;
+        avgTAT += static_cast<double>(process.getTurnaroundTime()) / processes.size();
+        avgWT += static_cast<double>(process.getWaitingTime()) / processes.size();
+    }
+    std::cout << "Average Turnaround Time: " << avgTAT << '\n'
+              << "Average Waiting Time: " << avgWT << std::endl;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OS/image7.png}
+
+\concl{
+    Multiple types of scheduling algorithms were implemented and their outputs were documented successfully.
+}
+\fi
+
+\end{document}
+
