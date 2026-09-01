@@ -1,0 +1,451 @@
+% ============================================================
+% labstyle.sty
+% CSMC204 Laboratory File Style
+%
+% Usage:
+%   \documentclass[14pt,letterpaper]{article}
+%   \usepackage{labstyle}
+%
+% Compile with:
+%   lualatex OOP.tex
+%   lualatex OS.tex
+%
+% Project structure:
+%
+%   .
+%   ├── fonts/
+%   │   ├── times.ttf
+%   │   ├── timesbd.ttf
+%   │   ├── timesi.ttf
+%   │   ├── timesbi.ttf
+%   │   ├── cour.ttf
+%   │   ├── courbd.ttf
+%   │   ├── couri.ttf
+%   │   └── courbi.ttf
+%   ├── images/
+%   │   ├── OOP/
+%   │   └── OS/
+%   ├── labstyle.sty
+%   ├── OOP.tex
+%   └── OS.tex
+%
+% ============================================================
+
+
+\NeedsTeXFormat{LaTeX2e}
+
+\ProvidesPackage{labstyle}[
+    2026/09/01
+    CSMC204 Laboratory File Style
+]
+
+
+% ============================================================
+% PACKAGES
+% ============================================================
+
+\RequirePackage{fontspec}
+
+\RequirePackage[
+    letterpaper,
+    left=1in,
+    right=1in,
+    top=1in,
+    bottom=1in,
+    headheight=17pt,
+    headsep=0.5in,
+    footskip=0.5in
+]{geometry}
+
+\RequirePackage{fancyhdr}
+
+\RequirePackage{graphicx}
+
+\RequirePackage{xparse}
+
+\RequirePackage{needspace}
+
+\RequirePackage{tcolorbox}
+
+\tcbuselibrary{
+    breakable,
+    skins,
+    listings
+}
+
+
+% ============================================================
+% FONTS
+% ============================================================
+%
+% The exact TTF files are bundled with the project.
+%
+% This means the document does NOT depend on Times New Roman
+% or Courier New being installed on the operating system.
+%
+% LuaLaTeX loads the fonts directly from ./fonts/.
+%
+% ============================================================
+
+
+% ------------------------------------------------------------
+% Main document font
+% ------------------------------------------------------------
+
+\setmainfont[
+    Path = fonts/,
+    UprightFont = times.ttf,
+    BoldFont = timesbd.ttf,
+    ItalicFont = timesi.ttf,
+    BoldItalicFont = timesbi.ttf
+]{times.ttf}
+
+
+% ------------------------------------------------------------
+% Monospace / code font
+% ------------------------------------------------------------
+
+\setmonofont[
+    Path = fonts/,
+    UprightFont = cour.ttf,
+    BoldFont = courbd.ttf,
+    ItalicFont = couri.ttf,
+    BoldItalicFont = courbi.ttf
+]{cour.ttf}
+
+
+% ============================================================
+% PAGE GEOMETRY
+% ============================================================
+%
+% The supplied Word document uses:
+%
+%   Paper size : US Letter
+%   Width      : 8.5 in
+%   Height     : 11 in
+%   Left       : 1 in
+%   Right      : 1 in
+%   Top        : 1 in
+%   Bottom     : 1 in
+%
+% ============================================================
+
+% geometry is already configured above.
+% These values are repeated here as documentation only.
+
+
+% ============================================================
+% DEFAULT DOCUMENT TYPOGRAPHY
+% ============================================================
+%
+% The Word document's Normal style uses 14 pt text.
+%
+% We use a 16 pt baseline skip as the default approximation of
+% the document's line spacing.
+%
+% Paragraphs have no first-line indentation.
+%
+% ============================================================
+
+\AtBeginDocument{
+
+    \fontsize{14pt}{16pt}\selectfont
+
+    \setlength{\parindent}{0pt}
+
+    \setlength{\parskip}{8pt}
+
+}
+
+
+% ============================================================
+% PAGE FOOTER
+% ============================================================
+%
+% The supplied document has:
+%
+%   CSMC204              PAGE              25BTCS006
+%
+% with the three elements aligned:
+%
+%   LEFT                 CENTER                 RIGHT
+%
+% ============================================================
+
+\pagestyle{fancy}
+
+\fancyhf{}
+
+
+% Left footer
+\fancyfoot[L]{CSMC204}
+
+
+% Center footer
+\fancyfoot[C]{\thepage}
+
+
+% Right footer
+\fancyfoot[R]{25BTCS006}
+
+
+% No horizontal rules
+\renewcommand{\headrulewidth}{0pt}
+
+\renewcommand{\footrulewidth}{0pt}
+
+
+% Footer position
+\setlength{\footskip}{0.5in}
+
+
+% ============================================================
+% ASSIGNMENT TITLE
+% ============================================================
+%
+% Usage:
+%
+%   \assignmenttitle
+%       {LAB ASSIGNMENT 3}
+%       {INTRODUCTION TO OBJECT AND CLASSES}
+%
+% Produces a centered, bold title.
+%
+% ============================================================
+
+\NewDocumentCommand{\assignmenttitle}{m m}
+{
+    \begin{center}
+
+        \textbf{#1}
+
+        \textbf{#2}
+
+    \end{center}
+}
+
+
+% ============================================================
+% AIM
+% ============================================================
+%
+% Usage:
+%
+%   \aim{
+%       To write C++ programs utilizing concepts of
+%       classes and objects.
+%   }
+%
+% ============================================================
+
+\NewDocumentCommand{\aim}{m}
+{
+    \textbf{AIM:} #1
+    \par
+}
+
+
+% ============================================================
+% PROGRAMS LABEL
+% ============================================================
+%
+% Usage:
+%
+%   \programs
+%
+% ============================================================
+
+\newcommand{\programs}
+{
+    \textbf{Programs:}
+    \par
+}
+
+
+% ============================================================
+% PROGRAM DESCRIPTION
+% ============================================================
+%
+% Program descriptions in the supplied document are bold.
+%
+% Usage:
+%
+%   \program{
+%       Write a program that demonstrates ...
+%   }
+%
+% ============================================================
+
+\NewDocumentCommand{\program}{m}
+{
+    \needspace{3\baselineskip}
+
+    \textbf{#1}
+
+    \par
+}
+
+
+% ============================================================
+% CODE LABEL
+% ============================================================
+%
+% Usage:
+%
+%   \codelabel
+%
+% ============================================================
+
+\newcommand{\codelabel}
+{
+    \textbf{Code:}
+    \par
+}
+
+
+% ============================================================
+% CODE ENVIRONMENT
+% ============================================================
+%
+% The supplied Word document uses:
+%
+%   Font       : Courier New
+%   Size       : 14 pt
+%   Background : white
+%   Border     : black
+%   Border     : thin
+%   Corners    : square
+%
+% A tcolorbox listing is used so that C++ source code can be
+% inserted directly without escaping characters such as:
+%
+%   #
+%   %
+%   &
+%   _
+%   {
+%   }
+%
+% Usage:
+%
+%   \begin{code}
+%   #include <iostream>
+%
+%   int main()
+%   {
+%       return 0;
+%   }
+%   \end{code}
+%
+% ============================================================
+
+\newtcblisting{code}
+{
+    breakable,
+
+    enhanced,
+
+    colback=white,
+
+    colframe=black,
+
+    boxrule=0.5pt,
+
+    arc=0pt,
+
+    left=6pt,
+
+    right=6pt,
+
+    top=5pt,
+
+    bottom=5pt,
+
+    boxsep=0pt,
+
+    before skip=0pt,
+
+    after skip=0pt,
+
+    listing only,
+
+    listing options={
+        basicstyle=
+            \ttfamily
+            \fontsize{14pt}{16pt}
+            \selectfont,
+
+        columns=fullflexible,
+
+        keepspaces=true,
+
+        breaklines=true
+    }
+}
+
+
+% ============================================================
+% OUTPUT LABEL
+% ============================================================
+%
+% Usage:
+%
+%   \outputlabel
+%
+% ============================================================
+
+\newcommand{\outputlabel}
+{
+    \textbf{Output:}
+    \par
+}
+
+
+% ============================================================
+% OUTPUT IMAGE
+% ============================================================
+%
+% Usage:
+%
+%   \outputimage{images/OOP/output01.png}
+%
+% Optional width:
+%
+%   \outputimage[0.60\linewidth]{images/OOP/output01.png}
+%
+% ============================================================
+
+\NewDocumentCommand{\outputimage}{O{0.75\linewidth} m}
+{
+    \begin{center}
+
+        \includegraphics[
+            width=#1
+        ]{#2}
+
+    \end{center}
+}
+
+
+% ============================================================
+% GENERIC BOLD LABEL
+% ============================================================
+%
+% Useful for things such as:
+%
+%   \sectionlabel{Result:}
+%
+% ============================================================
+
+\NewDocumentCommand{\sectionlabel}{m}
+{
+    \textbf{#1}
+    \par
+}
+
+
+% ============================================================
+% END OF STYLE FILE
+% ============================================================
+
+\endinput
