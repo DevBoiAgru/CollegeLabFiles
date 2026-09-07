@@ -11,4 +11,4 @@ Create a `fonts` folder next to the `labstyle.sty` file, and copy the below file
 
 
 Compile with lualatex.
-`lualatex OOP.tex` or `lualatex OS.tex`
+`lualatex -interaction=nonstopmode OOP.tex` or `lualatex -interaction=nonstopmode OS.tex`

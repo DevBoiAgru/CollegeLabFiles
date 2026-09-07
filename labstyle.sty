@@ -346,16 +346,17 @@
 %
 % \outputimage[0.60\linewidth]{images/OOP/output01.png}
 
-\NewDocumentCommand{\outputimage}{O{0.75\linewidth} m}
+\NewDocumentCommand{\outputimage}{O{0.5\linewidth} O{0.35\textheight} m}
 {
     \begin{center}
-
         \includegraphics[
-            width=#1
-        ]{#2}
-
+            width=#1,
+            height=#2,
+            keepaspectratio
+        ]{#3}
     \end{center}
 }
+
 
 % ============================================================
 % CONCLUSION

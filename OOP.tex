@@ -6,6 +6,10 @@
 
 \begin{document}
 
+% ============================================================
+% LAB ASSIGNMENT 1: BASICS REVISION
+% ============================================================
+
 \assignmenttitle
     {LAB ASSIGNMENT 1}
     {BASICS REVISION}
@@ -37,19 +41,2081 @@ int main() {
             cin >> a[i][j];
 
     for (int j = 0; j < n; j++) {
-        for (int i = n - 1; i >= 0; i--) {
+        for (int i = n - 1; i >= 0; i--)
             cout << a[i][j] << " ";
-        }
         cout << endl;
     }
 
-
     return 0;
-
 }
 \end{code}
 
 \outputlabel
-\outputimage[0.35\linewidth]{images/OOP/image1.png}
+\outputimage[0.50\linewidth]{images/OOP/image1.png}
+
+\program{
+    2. Write a program to reverse a string using pointers.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    char str[] = "Hello, world!";
+
+    char *start = str;
+    char *end = str + strlen(str) - 1;
+
+    while (start < end) {
+        char temp = *start;
+        *start = *end;
+        *end = temp;
+        start++;
+        end--;
+    }
+
+    cout << str;
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image2.png}
+
+\program{
+    3. Write a program to find the longest word in the sentence.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+int main() {
+    string sentence, word, longest;
+    sentence = "This is a sentence with a long word.";
+
+    int maxLen = 0, startIdx = 0;
+    int curLen = 0, curStart = 0;
+
+    for (int i = 0; i <= sentence.length(); i++) {
+        // Check if character is a letter
+        char c = (i < sentence.length()) ? sentence[i] : ' ';
+        bool isAlnum = (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+
+        if (isAlnum) {
+            if (curLen == 0) curStart = i;
+            curLen++;
+        } else {
+            if (curLen > maxLen) {
+                maxLen = curLen;
+                startIdx = curStart;
+            }
+            curLen = 0; // Reset for next word
+        }
+    }
+
+    std::cout << "Longest word is: ";
+    for (int i = 0; i < maxLen; i++) {
+        std::cout << sentence[startIdx + i];
+    }
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image3.png}
+
+\program{
+    4. Write a program to store user input in a file until EXIT, then display in reverse.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+#include <fstream>
+#include <vector>
+using namespace std;
+
+int main() {
+    ofstream file("file.txt");
+    vector<string> lines;
+    string text;
+
+    while (true) {
+        getline(cin, text);
+        if (text == "EXIT")
+            break;
+        file << text << endl;
+        lines.push_back(text);
+    }
+
+    file.close();
+
+    for (int i = lines.size() - 1; i >= 0; i--)
+        cout << lines[i] << endl;
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image4.png}
+
+\program{
+    5. Write a program to find the missing number in an array.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+
+    int sum = 0;
+
+    for (int i = 1; i < n; i++) {
+        int x;
+        cin >> x;
+        sum += x;
+    }
+
+    int total = n * (n + 1) / 2;
+
+    cout << total - sum;
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image5.png}
+
+\program{
+    6. Write a program to count ways to climb stairs 1 or 2 steps at a time.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+int countWays(int n) {
+    if (n == 0 || n == 1)
+        return 1;
+
+    return countWays(n - 1) + countWays(n - 2);
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    cout << countWays(n);
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image6.png}
+
+\program{
+    7. Write a program to check if 2 strings are anagrams.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    string a, b;
+
+    cin >> a >> b;
+
+    sort(a.begin(), a.end());
+    sort(b.begin(), b.end());
+
+    if (a == b)
+        cout << "Anagram";
+    else
+        cout << "Not Anagram";
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image7.png}
+\outputimage[0.50\linewidth]{images/OOP/image8.png}
+
+\program{
+    8. Write a program to find the union and intersection of arrays.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n1, n2;
+
+    cin >> n1;
+    int a[20];
+
+    for (int i = 0; i < n1; i++)
+        cin >> a[i];
+
+    cin >> n2;
+    int b[20];
+
+    for (int i = 0; i < n2; i++)
+        cin >> b[i];
+
+    cout << "Intersection: ";
+    for (int i = 0; i < n1; i++) {
+        for (int j = 0; j < n2; j++) {
+            if (a[i] == b[j]) {
+                cout << a[i] << " ";
+                break;
+            }
+        }
+    }
+
+    cout << endl << "Union: ";
+
+    for (int i = 0; i < n1; i++)
+        cout << a[i] << " ";
+
+    for (int j = 0; j < n2; j++) {
+        bool found = false;
+        for (int i = 0; i < n1; i++) {
+            if (b[j] == a[i])
+                found = true;
+        }
+        if (!found)
+            cout << b[j] << " ";
+    }
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image9.png}
+
+\program{
+    9. Write a program to count frequency of each character (case insensitive).
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main() {
+    ifstream file("file.txt");
+
+    char ch;
+    int freq[26] = {0};
+
+    while (file.get(ch)) {
+        ch = (ch >= 'a' && ch <= 'z') ? ch : ch - ('A' - 'a');
+
+        if (ch >= 'a' && ch <= 'z')
+            freq[ch - 'a']++;
+    }
+
+    for (int i = 0; i < 26; i++) {
+        if (freq[i] > 0)
+            cout << char(i + 'a') << " : " << freq[i] << endl;
+    }
+
+    file.close();
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image10.png}
+
+
+% ============================================================
+% LAB ASSIGNMENT 2: POINTERS, STRUCTURES, FUNCTIONS
+% ============================================================
+
+\newpage
+
+\assignmenttitle
+    {LAB ASSIGNMENT 2}
+    {POINTERS, STRUCTURES, FUNCTIONS}
+
+\aim{
+    To write C++ programs utilizing concepts of pointers, structures and functions.
+}
+
+\programs
+
+\program{
+    1. A phone number, such as (212) 767-8900, can be thought of as having three parts: the area code (212), the exchange (767), and the number (8900). Write a program that uses a structure to store these three parts of a phone number separately. Call the structure phone. Create two structure variables of type phone. Initialize one, and have the user input a number for the other one. Then display both numbers. The interchange might look like this:\\[4pt]
+    Enter your area code, exchange, and number: 415 555 1212\\[4pt]
+    My number is (212) 767-8900\\[4pt]
+    Your number is (415) 555-1212
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+struct phone
+{
+    int area;
+    int exchange;
+    int number;
+};
+
+int main()
+{
+    phone my = {212, 767, 8900};
+    phone your;
+
+    cout << "Enter your area code, exchange and number: ";
+    cin >> your.area >> your.exchange >> your.number;
+
+    cout << "My number is (" << my.area << ") " << my.exchange << "-" << my.number << endl;
+    cout << "Your number is (" << your.area << ") " << your.exchange << "-" << your.number << endl;
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image11.png}
+
+\program{
+    2. A point on the two-dimensional plane can be represented by two numbers: an x coordinate and a y coordinate. For example, (4,5) represents a point 4 units to the right of the vertical axis, and 5 units up from the horizontal axis. The sum of two points can be defined as a new point whose x coordinate is the sum of the x coordinates of the two points, and whose y coordinate is the sum of the y coordinates.\\[4pt]
+    Write a program that uses a structure called point to model a point. Define three points, and have the user input values to two of them. Then set the third point equal to the sum of the other two, and display the value of the new point. Interaction with the program might look like this:\\[4pt]
+    Enter coordinates for p1: 3 4\\[4pt]
+    Enter coordinates for p2: 5 7\\[4pt]
+    Coordinates of p1+p2 are: 8, 11
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+struct point
+{
+    int x;
+    int y;
+};
+
+int main()
+{
+    point p1, p2, p3;
+
+    cout << "Enter coordinates for p1: ";
+    cin >> p1.x >> p1.y;
+
+    cout << "Enter coordinates for p2: ";
+    cin >> p2.x >> p2.y;
+
+    p3.x = p1.x + p2.x;
+    p3.y = p1.y + p2.y;
+
+    cout << "Coordinates of p1+p2 are: " << p3.x << ", " << p3.y;
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image12.png}
+
+\program{
+    3. Create a structure called time. Its three members, all type int, should be called hours, minutes, and seconds. Write a program that prompts the user to enter a time value in hours, minutes, and seconds. This can be in 12:59:59 format, or each number can be entered at a separate prompt (``Enter hours:'', and so forth). The program should then store the time in a variable of type struct time, and finally print out the total number of seconds represented by this time value.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+struct time
+{
+    int hours;
+    int minutes;
+    int seconds;
+};
+
+int main()
+{
+    time t1;
+    long total;
+
+    cout << "Enter hours: ";
+    cin >> t1.hours;
+
+    cout << "Enter minutes: ";
+    cin >> t1.minutes;
+
+    cout << "Enter seconds: ";
+    cin >> t1.seconds;
+
+    total = t1.hours * 3600 + t1.minutes * 60 + t1.seconds;
+
+    cout << "Total seconds = " << total;
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image13.png}
+
+\program{
+    4. Implement a function Swap (int *a, int *b) that swaps the values of two integers using pointers. Demonstrate its use in a main function that accepts two integers and prints them before and after swapping.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+void Swap(int *a, int *b)
+{
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int main()
+{
+    int x, y;
+
+    cout << "Enter two numbers: ";
+    cin >> x >> y;
+
+    cout << "Before Swap: " << x << " " << y << endl;
+
+    Swap(&x, &y);
+
+    cout << "After Swap: " << x << " " << y;
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image14.png}
+
+\program{
+    5. Define inline functions for basic arithmetic operations (add, subtract, multiply, divide) and use them in a menu-driven calculator program that performs operations based on user input.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+inline int add(int a, int b)
+{
+    return a + b;
+}
+
+inline int sub(int a, int b)
+{
+    return a - b;
+}
+
+inline int mul(int a, int b)
+{
+    return a * b;
+}
+
+inline float divi(int a, int b)
+{
+    return (float)a / b;
+}
+
+int main()
+{
+    int a, b, ch;
+
+    cout << "Enter two numbers: ";
+    cin >> a >> b;
+
+    cout << "1.Add\n2.Subtract\n3.Multiply\n4.Divide\n";
+    cin >> ch;
+
+    if (ch == 1)
+        cout << add(a, b);
+    else if (ch == 2)
+        cout << sub(a, b);
+    else if (ch == 3)
+        cout << mul(a, b);
+    else if (ch == 4)
+        cout << divi(a, b);
+    else
+        cout << "Invalid Choice";
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image15.png}
+
+\program{
+    6. Write a recursive function that accepts a pointer to an array and computes the sum of elements. Extend this to find the maximum value recursively, using pointer arithmetic.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+int sum(int *arr, int n)
+{
+    if (n == 0)
+        return 0;
+
+    return *arr + sum(arr + 1, n - 1);
+}
+
+int maximum(int *arr, int n)
+{
+    if (n == 1)
+        return *arr;
+
+    int m = maximum(arr + 1, n - 1);
+
+    if (*arr > m)
+        return *arr;
+    else
+        return m;
+}
+
+int main()
+{
+    int n;
+
+    cout << "Enter size: ";
+    cin >> n;
+
+    int arr[n];
+
+    for (int i = 0; i < n; i++)
+        cin >> arr[i];
+
+    cout << "Sum = " << sum(arr, n) << endl;
+    cout << "Maximum = " << maximum(arr, n);
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image16.png}
+
+\program{
+    7. Start with an array of pointers to strings representing the days of the week. Provide functions to sort the strings into alphabetical order. Sort the pointers to the strings, not the actual strings.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main()
+{
+    char *days[] = {
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+    };
+
+    char *temp;
+
+    for (int i = 0; i < 7; i++)
+    {
+        for (int j = i + 1; j < 7; j++)
+        {
+            if (strcmp(days[i], days[j]) > 0)
+            {
+                temp = days[i];
+                days[i] = days[j];
+                days[j] = temp;
+            }
+        }
+    }
+
+    cout << "Sorted Days:\n";
+
+    for (int i = 0; i < 7; i++)
+        cout << days[i] << endl;
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image17.png}
+
+\program{
+    8. Simulate how arrays are stored in memory by writing a program that allocates an array dynamically and then displays both the content and the address of each element. Use pointer arithmetic to traverse the array and show the difference in address steps.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int n;
+
+    cout << "Enter size: ";
+    cin >> n;
+
+    int *arr = new int[n];
+
+    for (int i = 0; i < n; i++)
+    {
+        cout << "Enter element: ";
+        cin >> *(arr + i);
+    }
+
+    cout << "\nValue    Address\n";
+
+    for (int i = 0; i < n; i++)
+    {
+        cout << *(arr + i) << "       " << (arr + i) << endl;
+    }
+
+    delete[] arr;
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image18.png}
+
+\program{
+    9. Simulate a memory manager that keeps track of memory blocks (e.g., like malloc/free) using an array and pointers. Allow users to allocate, deallocate, and compact memory. Use pointer arithmetic to manage and traverse the memory layout.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int memory[10] = {0};
+    int choice, pos;
+
+    while (1)
+    {
+        cout << "\n1.Allocate\n2.Free\n3.Display\n4.Exit\n";
+        cin >> choice;
+
+        if (choice == 1)
+        {
+            cout << "Enter position to (0-9): ";
+            cin >> pos;
+            memory[pos] = 1;
+        }
+        else if (choice == 2)
+        {
+            cout << "Enter position: ";
+            cin >> pos;
+            memory[pos] = 0;
+        }
+        else if (choice == 3)
+        {
+            for (int *p = memory; p < memory + 10; p++)
+                cout << *p << " ";
+            cout << endl;
+        }
+        else
+            break;
+    }
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image19.png}
+\outputimage[0.50\linewidth]{images/OOP/image20.png}
+\outputimage[0.50\linewidth]{images/OOP/image21.png}
+\outputimage[0.50\linewidth]{images/OOP/image22.png}
+\outputimage[0.50\linewidth]{images/OOP/image23.png}
+
+
+% ============================================================
+% LAB ASSIGNMENT 3: INTRODUCTION TO OBJECT AND CLASSES
+% ============================================================
+
+\newpage
+
+\assignmenttitle
+    {LAB ASSIGNMENT 3}
+    {INTRODUCTION TO OBJECT AND CLASSES}
+
+\aim{
+    To write C++ programs utilizing concepts of classes and objects.
+}
+
+\programs
+
+\program{
+    1. Create a class that includes a data member that holds a ``serial number'' for each object created from the class. That is, the first object created will be numbered 1, the second 2, and so on. To do this, you'll need another data member that records a count of how many objects have been created so far. (This member should apply to the class as a whole; not to individual objects. What keyword specifies this?) Then, as each object is created, its constructor can examine this count member variable to determine the appropriate serial number for the new object.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Item {
+    static int count;
+    int serialNumber;
+
+public:
+    Item() {
+        count++;
+        serialNumber = count;
+    }
+
+    void display() {
+        cout << "Serial Number: " << serialNumber << endl;
+    }
+};
+
+int Item::count = 0;
+
+int main() {
+    Item item1, item2, item3;
+
+    item1.display();
+    item2.display();
+    item3.display();
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image24.png}
+
+\program{
+    2. Imagine a tollbooth at a bridge. Cars passing by the booth are expected to pay a 50 cent toll. Mostly they do, but sometimes a car goes by without paying. The tollbooth keeps track of the number of cars that have gone by, and of the total amount of money collected. Model this tollbooth with a class called tollBooth. The two data items are a type unsigned int to hold the total number of cars, and a type double to hold the total amount of money collected. A constructor initializes both of these to 0. A member function called payingCar() increments the car total and adds 0.50 to the cash total. Another function, called nopayCar(), increments the car total but adds nothing to the cash total. Finally, a member function called display() displays the two totals. Make appropriate member functions const.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class tollBooth {
+    unsigned int totalCars;
+    double totalCash;
+
+public:
+    tollBooth() {
+        totalCars = 0;
+        totalCash = 0;
+    }
+
+    void payingCar() {
+        totalCars++;
+        totalCash += 0.50;
+    }
+
+    void nopayCar() {
+        totalCars++;
+    }
+
+    void display() const {
+        cout << "Total cars: " << totalCars << endl;
+        cout << "Total cash: $" << totalCash << endl;
+    }
+};
+
+int main() {
+    tollBooth booth;
+    char choice;
+
+    while (true) {
+        cin >> choice;
+
+        if (choice == 'p')
+            booth.payingCar();
+        else if (choice == 'n')
+            booth.nopayCar();
+        else if (choice == 'q')
+            break;
+    }
+
+    booth.display();
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image25.png}
+
+\program{
+    3. Create a class that takes a 2D array (matrix) as input and implements a function to find the transpose of the matrix.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Matrix {
+    int matrix[10][10];
+    int rows, columns;
+
+public:
+    void input() {
+        cin >> rows >> columns;
+
+        for (int row = 0; row < rows; row++)
+            for (int column = 0; column < columns; column++)
+                cin >> matrix[row][column];
+    }
+
+    void transpose() {
+        cout << "Transpose:" << endl;
+
+        for (int column = 0; column < columns; column++) {
+            for (int row = 0; row < rows; row++)
+                cout << matrix[row][column] << " ";
+
+            cout << endl;
+        }
+    }
+};
+
+int main() {
+    Matrix matrix;
+
+    matrix.input();
+    matrix.transpose();
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image26.png}
+
+\program{
+    4. Create a class ComplexNumber with functions to add and subtract two complex numbers.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class ComplexNumber {
+    float real;
+    float imaginary;
+
+public:
+    ComplexNumber(float realPart = 0, float imaginaryPart = 0) {
+        real = realPart;
+        imaginary = imaginaryPart;
+    }
+
+    ComplexNumber add(ComplexNumber number) {
+        return ComplexNumber(real + number.real,
+                             imaginary + number.imaginary);
+    }
+
+    ComplexNumber subtract(ComplexNumber number) {
+        return ComplexNumber(real - number.real,
+                             imaginary - number.imaginary);
+    }
+
+    void display() {
+        cout << real;
+
+        if (imaginary >= 0)
+            cout << " + " << imaginary << "i";
+        else
+            cout << " - " << -imaginary << "i";
+
+        cout << endl;
+    }
+};
+
+int main() {
+    float real1, imaginary1;
+    float real2, imaginary2;
+
+    cin >> real1 >> imaginary1;
+    cin >> real2 >> imaginary2;
+
+    ComplexNumber first(real1, imaginary1);
+    ComplexNumber second(real2, imaginary2);
+
+    ComplexNumber sum = first.add(second);
+    ComplexNumber difference = first.subtract(second);
+
+    cout << "Addition: ";
+    sum.display();
+
+    cout << "Subtraction: ";
+    difference.display();
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image27.png}
+
+\program{
+    5. In ocean navigation, locations are measured in degrees and minutes of latitude and longitude. Thus if you're lying off the mouth of Papeete Harbor in Tahiti, your location is 149 degrees 34.8 minutes west longitude, and 17 degrees 31.5 minutes south latitude. This is written as 149\textdegree{}34.8' W, 17\textdegree{}31.5' S. There are 60 minutes in a degree. (An older system also divided a minute into 60 seconds, but the modern approach is to use decimal minutes instead.) Longitude is measured from 0 to 180 degrees, east or west from Greenwich, England, to the international dateline in the Pacific. Latitude is measured from 0 to 90 degrees, north or south from the equator to the poles. Create a class angle that includes three member variables: an int for degrees, a float for minutes, and a char for the direction letter (N, S, E, or W). This class can hold either a latitude variable or a longitude variable. Write one member function to obtain an angle value (in degrees and minutes) and a direction from the user, and a second to display the angle value in 179\textdegree{}59.9' E format. Also write a three-argument constructor. Write a main() program that displays an angle initialized with the constructor, and then, within a loop, allows the user to input any angle value, and then displays the value. You can use the hex character constant `\textbackslash xF8', which usually prints a degree (\textdegree) symbol.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class angle {
+    int degrees;
+    float minutes;
+    char direction;
+
+public:
+    angle(int degree = 0, float minute = 0, char dir = 'N') {
+        degrees = degree;
+        minutes = minute;
+        direction = dir;
+    }
+
+    void getAngle() {
+        cin >> degrees >> minutes >> direction;
+    }
+
+    char getDirection() const {
+        return direction;
+    }
+
+    void display() const {
+        cout << degrees << "\xF8" << minutes << "' "
+             << direction << endl;
+    }
+};
+
+int main() {
+    angle firstAngle(149, 34.8, 'W');
+
+    cout << "Initial angle: ";
+    firstAngle.display();
+
+    angle userAngle;
+
+    while (true) {
+        userAngle.getAngle();
+
+        if (userAngle.getDirection() == 'X')
+            break;
+
+        userAngle.display();
+    }
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image28.png}
+
+\program{
+    6. Create a class BankAccount with members: account number, holder's name, balance, and interest rate. Include deposit, withdrawal, and interest calculation functions. Add a function to transfer money from one account object to another.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class BankAccount {
+    int accountNumber;
+    string holderName;
+    double balance;
+    double interestRate;
+
+public:
+    BankAccount(int number, string name, double amount, double rate) {
+        accountNumber = number;
+        holderName = name;
+        balance = amount;
+        interestRate = rate;
+    }
+
+    void deposit(double amount) {
+        balance += amount;
+    }
+
+    void withdraw(double amount) {
+        if (amount <= balance)
+            balance -= amount;
+        else
+            cout << "Insufficient balance" << endl;
+    }
+
+    void calculateInterest() {
+        balance += balance * interestRate / 100;
+    }
+
+    void transfer(BankAccount &other, double amount) {
+        if (amount <= balance) {
+            balance -= amount;
+            other.balance += amount;
+        }
+    }
+
+    void display() const {
+        cout << holderName << ": " << balance << endl;
+    }
+};
+
+int main() {
+    BankAccount account1(101, "John", 1000, 5);
+    BankAccount account2(102, "Alex", 500, 5);
+
+    account1.deposit(200);
+    account1.withdraw(100);
+    account1.calculateInterest();
+
+    account1.transfer(account2, 300);
+
+    account1.display();
+    account2.display();
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image29.png}
+
+\program{
+    7. Design a class ATM that stores an account PIN, balance, and transaction history. Add member functions to withdraw cash, deposit money, check balance, and print a mini statement. Ensure PIN authentication before any transaction.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class ATM {
+    int pin;
+    double balance;
+    string history[20];
+    int transactionCount;
+
+    bool checkPin(int enteredPin) {
+        return enteredPin == pin;
+    }
+
+public:
+    ATM(int userPin, double amount) {
+        pin = userPin;
+        balance = amount;
+        transactionCount = 0;
+    }
+
+    void withdraw(int enteredPin, double amount) {
+        if (!checkPin(enteredPin)) {
+            cout << "Wrong PIN" << endl;
+            return;
+        }
+
+        if (amount <= balance) {
+            balance -= amount;
+            history[transactionCount++] = "Withdrawal";
+            cout << "Cash withdrawn" << endl;
+        } else {
+            cout << "Insufficient balance" << endl;
+        }
+    }
+
+    void deposit(int enteredPin, double amount) {
+        if (!checkPin(enteredPin)) {
+            cout << "Wrong PIN" << endl;
+            return;
+        }
+
+        balance += amount;
+        history[transactionCount++] = "Deposit";
+        cout << "Money deposited" << endl;
+    }
+
+    void checkBalance(int enteredPin) {
+        if (!checkPin(enteredPin)) {
+            cout << "Wrong PIN" << endl;
+            return;
+        }
+
+        cout << "Balance: " << balance << endl;
+    }
+
+    void miniStatement(int enteredPin) {
+        if (!checkPin(enteredPin)) {
+            cout << "Wrong PIN" << endl;
+            return;
+        }
+
+        cout << "Mini Statement:" << endl;
+
+        for (int index = 0; index < transactionCount; index++)
+            cout << history[index] << endl;
+    }
+};
+
+int main() {
+    ATM atm(1234, 5000);
+
+    atm.deposit(1234, 1000);
+    atm.withdraw(1234, 500);
+    atm.checkBalance(1234);
+    atm.miniStatement(1234);
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image30.png}
+
+\program{
+    8. Design a C++ program that defines a class FileSession to simulate the process of opening and closing files using constructors and destructors. The constructor should accept a file name as a parameter, display a message indicating that the file is being opened, and simulate resource allocation (such as initializing a file pointer or counter). The destructor should automatically display a message indicating that the file is being closed and simulate releasing resources when the object goes out of scope. Create multiple FileSession objects within the same scope to demonstrate that destructors are called in reverse order of creation. Additionally, illustrate the difference between stack allocation, where destructors are called automatically at the end of scope, and dynamic allocation using new and delete, where the destructor is called explicitly through deallocation. The program should clearly show how constructors and destructors help manage resources effectively.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class FileSession {
+    string fileName;
+
+public:
+    FileSession(string name) {
+        fileName = name;
+        cout << "Opening file: " << fileName << endl;
+    }
+
+    ~FileSession() {
+        cout << "Closing file: " << fileName << endl;
+    }
+};
+
+int main() {
+
+    cout << "Stack objects:" << endl;
+
+    {
+        FileSession file1("one.txt");
+        FileSession file2("two.txt");
+        FileSession file3("three.txt");
+
+        cout << "End of scope" << endl;
+    }
+
+    cout << endl;
+    cout << "Dynamic object:" << endl;
+
+    FileSession *file4 = new FileSession("four.txt");
+
+    cout << "Deleting dynamic object" << endl;
+
+    delete file4;
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image31.png}
+
+\program{
+    9. Develop a class TempStorage that simulates creating and deleting temporary files during a program's execution. The constructor should take a file name and display a message indicating that the temporary file is being created. The destructor should display a message that the file is being deleted. Create multiple objects in a function to show how temporary files are automatically deleted when the function ends. Add a case where temporary storage is dynamically created and explicitly deleted to free resources.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class TempStorage {
+    string fileName;
+
+public:
+    TempStorage(string name) {
+        fileName = name;
+        cout << "Creating temporary file: " << fileName << endl;
+    }
+
+    ~TempStorage() {
+        cout << "Deleting temporary file: " << fileName << endl;
+    }
+};
+
+void createTemporaryFiles() {
+    TempStorage file1("temp1.tmp");
+    TempStorage file2("temp2.tmp");
+
+    cout << "Function is running" << endl;
+}
+
+int main() {
+    cout << "Inside function:" << endl;
+
+    createTemporaryFiles();
+
+    cout << endl;
+    cout << "Dynamic temporary file:" << endl;
+
+    TempStorage *file3 = new TempStorage("temp3.tmp");
+
+    cout << "Deleting dynamically created file" << endl;
+
+    delete file3;
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image32.png}
+
+\program{
+    10. Create a class ElectricityBill with members for customer name, units consumed, and total bill amount. Add a function to calculate the bill based on units consumed and display the bill.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class ElectricityBill {
+    string customerName;
+    int units;
+    double totalBill;
+
+public:
+    ElectricityBill(string name, int usedUnits) {
+        customerName = name;
+        units = usedUnits;
+        totalBill = 0;
+    }
+
+    void calculateBill() {
+        totalBill = units * 1.50;
+    }
+
+    void display() {
+        cout << "Customer: " << customerName << endl;
+        cout << "Units: " << units << endl;
+        cout << "Total Bill: Rs. " << totalBill << endl;
+    }
+};
+
+int main() {
+    string name;
+    int units;
+
+    cin >> name >> units;
+
+    ElectricityBill bill(name, units);
+
+    bill.calculateBill();
+    bill.display();
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image33.png}
+
+
+% ============================================================
+% LAB ASSIGNMENT 4: OPERATOR OVERLOADING
+% ============================================================
+
+\newpage
+
+\assignmenttitle
+    {LAB ASSIGNMENT 4}
+    {OPERATOR OVERLOADING}
+
+\aim{
+    To write C++ programs utilizing concepts of operator overloading.
+}
+
+\programs
+
+\program{
+    1. Create a class Polar that represents the points on the plain as polar coordinates (radius and angle). Create an overloaded +operator for addition of two Polar quantities. ``Adding'' two points on the plain can be accomplished by adding their X coordinates and then adding their Y coordinates. This gives the X and Y coordinates of the ``answer.'' Thus you'll need to convert two sets of polar coordinates to rectangular coordinates, add them, then convert the resulting rectangular representation back to polar.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+class Polar {
+    float radius;
+    float angle;
+
+public:
+    Polar(float r = 0, float a = 0) {
+        radius = r;
+        angle = a;
+    }
+
+    Polar operator+(Polar other) {
+        float x1 = radius * cos(angle * 3.14159 / 180);
+        float y1 = radius * sin(angle * 3.14159 / 180);
+
+        float x2 = other.radius * cos(other.angle * 3.14159 / 180);
+        float y2 = other.radius * sin(other.angle * 3.14159 / 180);
+
+        float x = x1 + x2;
+        float y = y1 + y2;
+
+        float newRadius = sqrt(x * x + y * y);
+        float newAngle = atan2(y, x) * 180 / 3.14159;
+
+        return Polar(newRadius, newAngle);
+    }
+
+    void display() {
+        cout << "Radius: " << radius << endl;
+        cout << "Angle: " << angle << " degrees" << endl;
+    }
+};
+
+int main() {
+    float radius1, angle1, radius2, angle2;
+
+    cin >> radius1 >> angle1;
+    cin >> radius2 >> angle2;
+
+    Polar first(radius1, angle1);
+    Polar second(radius2, angle2);
+
+    Polar result = first + second;
+
+    cout << "Result:" << endl;
+    result.display();
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image34.png}
+
+\program{
+    2. Design a Currency class to represent money in rupees and paise. Overload the +, -, and * operators to perform arithmetic on two currency objects, and overload the == operator to check equality.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Currency {
+    int rupees;
+    int paise;
+
+    void convert() {
+        rupees += paise / 100;
+        paise = paise % 100;
+    }
+
+public:
+    Currency(int r = 0, int p = 0) {
+        rupees = r;
+        paise = p;
+        convert();
+    }
+
+    Currency operator+(Currency other) {
+        return Currency(rupees + other.rupees,
+                        paise + other.paise);
+    }
+
+    Currency operator-(Currency other) {
+        int first = rupees * 100 + paise;
+        int second = other.rupees * 100 + other.paise;
+
+        return Currency(0, first - second);
+    }
+
+    Currency operator*(Currency other) {
+        int first = rupees * 100 + paise;
+        int second = other.rupees * 100 + other.paise;
+
+        return Currency(0, (first * second) / 100);
+    }
+
+    bool operator==(Currency other) {
+        return rupees == other.rupees && paise == other.paise;
+    }
+
+    void display() {
+        cout << "Rs. " << rupees << ".";
+
+        if (paise < 10)
+            cout << "0";
+
+        cout << paise << endl;
+    }
+};
+
+int main() {
+    Currency first(100, 50);
+    Currency second(50, 75);
+
+    cout << "Addition: ";
+    (first + second).display();
+
+    cout << "Subtraction: ";
+    (first - second).display();
+
+    cout << "Multiplication: ";
+    (first * second).display();
+
+    cout << "Equal: ";
+
+    if (first == second)
+        cout << "Yes";
+    else
+        cout << "No";
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image35.png}
+
+\program{
+    3. Create a Temperature class that stores values in Celsius. Overload the + operator to add two temperature objects, and define type conversion operators to convert Celsius to Fahrenheit (operator float()) and to an integer (rounded Celsius).
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Temperature {
+    float celsius;
+
+public:
+    Temperature(float value = 0) {
+        celsius = value;
+    }
+
+    Temperature operator+(Temperature other) {
+        return Temperature(celsius + other.celsius);
+    }
+
+    operator float() {
+        return celsius * 9 / 5 + 32;
+    }
+
+    operator int() {
+        return (int)(celsius + 0.5);
+    }
+
+    void display() {
+        cout << celsius << " C" << endl;
+    }
+};
+
+int main() {
+    Temperature first(25);
+    Temperature second(10);
+
+    Temperature result = first + second;
+
+    cout << "Sum: ";
+    result.display();
+
+    float fahrenheit = result;
+    int roundedCelsius = result;
+
+    cout << "Fahrenheit: " << fahrenheit << endl;
+    cout << "Rounded Celsius: " << roundedCelsius << endl;
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image36.png}
+
+\program{
+    4. Implement an Item class with attributes name, price, and quantity. Overload the + operator to combine quantities of identical items and overload the * operator to calculate the total cost of the item (price * quantity).
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Item {
+    string name;
+    float price;
+    int quantity;
+
+public:
+    Item(string itemName = "", float itemPrice = 0, int itemQuantity = 0) {
+        name = itemName;
+        price = itemPrice;
+        quantity = itemQuantity;
+    }
+
+    Item operator+(Item other) {
+        if (name == other.name)
+            return Item(name, price, quantity + other.quantity);
+
+        return *this;
+    }
+
+    float operator*() {
+        return price * quantity;
+    }
+
+    void display() {
+        cout << name << " " << price << " " << quantity << endl;
+    }
+};
+
+int main() {
+    Item first("Pen", 10, 3);
+    Item second("Pen", 10, 5);
+
+    Item total = first + second;
+
+    cout << "Combined item: ";
+    total.display();
+
+    cout << "Total cost: Rs. " << *total << endl;
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image37.png}
+
+\program{
+    5. Write a Date class with attributes day, month, and year. Overload the ++ operator to increment the date by one day, and overload the - operator to calculate the number of days between two dates.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Date {
+    int day;
+    int month;
+    int year;
+
+    int daysInMonth() {
+        if (month == 2) {
+            if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0))
+                return 29;
+            return 28;
+        }
+
+        if (month == 4 || month == 6 || month == 9 || month == 11)
+            return 30;
+
+        return 31;
+    }
+
+public:
+    Date(int d = 1, int m = 1, int y = 2000) {
+        day = d;
+        month = m;
+        year = y;
+    }
+
+    Date operator++() {
+        day++;
+
+        if (day > daysInMonth()) {
+            day = 1;
+            month++;
+
+            if (month > 12) {
+                month = 1;
+                year++;
+            }
+        }
+
+        return *this;
+    }
+
+    int operator-(Date other) {
+        int days1 = year * 365 + month * 30 + day;
+        int days2 = other.year * 365 + other.month * 30 + other.day;
+
+        return days1 - days2;
+    }
+
+    void display() {
+        cout << day << "/" << month << "/" << year << endl;
+    }
+};
+
+int main() {
+    Date first(28, 2, 2024);
+    Date second(1, 3, 2024);
+
+    cout << "Before increment: ";
+    first.display();
+
+    ++first;
+
+    cout << "After increment: ";
+    first.display();
+
+    cout << "Difference: " << second - first << " days" << endl;
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image38.png}
+
+\program{
+    6. Define a Position class with x and y coordinates. Overload the + operator to move the position by another position object, the == operator to compare two positions, and the << operator to display the position in a user-friendly format.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Position {
+    int x;
+    int y;
+
+public:
+    Position(int xValue = 0, int yValue = 0) {
+        x = xValue;
+        y = yValue;
+    }
+
+    Position operator+(Position other) {
+        return Position(x + other.x, y + other.y);
+    }
+
+    bool operator==(Position other) {
+        return x == other.x && y == other.y;
+    }
+
+    friend ostream& operator<<(ostream& output, Position position) {
+        output << "(" << position.x << ", " << position.y << ")";
+        return output;
+    }
+};
+
+int main() {
+    Position first(10, 20);
+    Position second(5, 8);
+
+    Position result = first + second;
+
+    cout << "New position: " << result << endl;
+
+    if (first == second)
+        cout << "Positions are equal";
+    else
+        cout << "Positions are not equal";
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image39.png}
+
+\program{
+    7. Design a Book class with attributes title and copiesAvailable. Overload the -- operator to issue a book (decrement copies), the ++ operator to return a book (increment copies), and the == operator to check if two books are the same based on title.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Book {
+    string title;
+    int copiesAvailable;
+
+public:
+    Book(string bookTitle, int copies) {
+        title = bookTitle;
+        copiesAvailable = copies;
+    }
+
+    Book operator--() {
+        if (copiesAvailable > 0)
+            copiesAvailable--;
+
+        return *this;
+    }
+
+    Book operator++() {
+        copiesAvailable++;
+        return *this;
+    }
+
+    bool operator==(Book other) {
+        return title == other.title;
+    }
+
+    void display() {
+        cout << title << ": " << copiesAvailable << " copies" << endl;
+    }
+};
+
+int main() {
+    Book first("C++ Programming", 5);
+    Book second("C++ Programming", 2);
+
+    cout << "Before issuing: ";
+    first.display();
+
+    --first;
+
+    cout << "After issuing: ";
+    first.display();
+
+    ++first;
+
+    cout << "After returning: ";
+    first.display();
+
+    if (first == second)
+        cout << "Books are the same";
+    else
+        cout << "Books are different";
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image40.png}
+
+\program{
+    8. Create a Polynomial class to store polynomial expressions. Overload the == operator to check if two polynomials are identical and the < operator to compare the degrees of two polynomials.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Polynomial {
+    int coefficients[10];
+    int degree;
+
+public:
+    Polynomial(int polynomialDegree) {
+        degree = polynomialDegree;
+
+        for (int index = 0; index <= degree; index++)
+            cin >> coefficients[index];
+    }
+
+    bool operator==(Polynomial other) {
+        if (degree != other.degree)
+            return false;
+
+        for (int index = 0; index <= degree; index++) {
+            if (coefficients[index] != other.coefficients[index])
+                return false;
+        }
+
+        return true;
+    }
+
+    bool operator<(Polynomial other) {
+        return degree < other.degree;
+    }
+};
+
+int main() {
+    cout << "Enter coefficients of first polynomial:" << endl;
+
+    Polynomial first(2);
+
+    cout << "Enter coefficients of second polynomial:" << endl;
+
+    Polynomial second(2);
+
+    if (first == second)
+        cout << "Polynomials are identical" << endl;
+    else
+        cout << "Polynomials are different" << endl;
+
+    if (first < second)
+        cout << "First polynomial has smaller degree";
+    else
+        cout << "First polynomial does not have smaller degree";
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image41.png}
+
+\program{
+    9. Implement a Matrix class and overload the () operator so that elements can be accessed using the syntax M(i, j) instead of traditional two-dimensional array indexing.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Matrix {
+    int matrix[10][10];
+    int rows;
+    int columns;
+
+public:
+    Matrix(int rowCount, int columnCount) {
+        rows = rowCount;
+        columns = columnCount;
+
+        for (int row = 0; row < rows; row++)
+            for (int column = 0; column < columns; column++)
+                cin >> matrix[row][column];
+    }
+
+    int& operator()(int row, int column) {
+        return matrix[row][column];
+    }
+};
+
+int main() {
+    Matrix matrix(2, 3);
+
+    cout << "Element at (0, 1): " << matrix(0, 1) << endl;
+
+    matrix(1, 2) = 100;
+
+    cout << "Element at (1, 2): " << matrix(1, 2) << endl;
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image42.png}
+
+\program{
+    10. Develop a Cart class that stores multiple items. Overload the + operator to merge two carts into one, and the [] operator to directly access an item in the cart by index.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Cart {
+    string items[20];
+    int itemCount;
+
+public:
+    Cart() {
+        itemCount = 0;
+    }
+
+    void addItem(string item) {
+        items[itemCount] = item;
+        itemCount++;
+    }
+
+    Cart operator+(Cart other) {
+        Cart result = *this;
+
+        for (int index = 0; index < other.itemCount; index++)
+            result.addItem(other.items[index]);
+
+        return result;
+    }
+
+    string operator[](int index) {
+        return items[index];
+    }
+
+    void display() {
+        for (int index = 0; index < itemCount; index++)
+            cout << items[index] << endl;
+    }
+};
+
+int main() {
+    Cart first;
+    first.addItem("Book");
+    first.addItem("Pen");
+
+    Cart second;
+    second.addItem("Bag");
+    second.addItem("Notebook");
+
+    Cart combined = first + second;
+
+    cout << "Combined cart:" << endl;
+    combined.display();
+
+    cout << "Item at index 2: " << combined[2] << endl;
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image43.png}
+
+\program{
+    11. Write a Fraction class with numerator and denominator. Overload the / operator to divide two fractions and provide a type conversion operator operator double() to convert a fraction into its decimal equivalent.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Fraction {
+    int numerator;
+    int denominator;
+
+public:
+    Fraction(int top = 0, int bottom = 1) {
+        numerator = top;
+        denominator = bottom;
+    }
+
+    Fraction operator/(Fraction other) {
+        return Fraction(numerator * other.denominator,
+                        denominator * other.numerator);
+    }
+
+    operator double() {
+        return (double)numerator / denominator;
+    }
+
+    void display() {
+        cout << numerator << "/" << denominator << endl;
+    }
+};
+
+int main() {
+    Fraction first(3, 4);
+    Fraction second(2, 5);
+
+    Fraction result = first / second;
+
+    cout << "Division: ";
+    result.display();
+
+    double decimal = result;
+
+    cout << "Decimal: " << decimal << endl;
+
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image44.png}
 
 \end{document}
