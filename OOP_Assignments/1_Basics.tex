@@ -23,11 +23,9 @@ int main() {
     int n, a[10][10];
     cin >> n;
     for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
-            cin >> a[i][j];
+        for (int j = 0; j < n; j++) {cin >> a[i][j]};
     for (int j = 0; j < n; j++) {
-        for (int i = n - 1; i >= 0; i--)
-            cout << a[i][j] << " ";
+        for (int i = n - 1; i >= 0; i--) {cout << a[i][j] << " "};
         cout << endl;
     }
     return 0;
@@ -77,11 +75,9 @@ using namespace std;
 int main() {
     string sentence = "This is a sentence with a long word.", word, longest;
     for (char c : sentence + " ") {
-        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
-            word += c;
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) {word += c};
         else {
-            if (word.length() > longest.length())
-                longest = word;
+            if (word.length() > longest.length()) {longest = word};
             word = "";
         }
     }
@@ -113,8 +109,7 @@ int main() {
         file << text << endl;
         lines.push_back(text);
     }
-    for (int i = lines.size() - 1; i >= 0; i--)
-        cout << lines[i] << endl;
+    for (int i = lines.size() - 1; i >= 0; i--) {cout << lines[i] << endl;};
     return 0;
 }
 \end{code}
@@ -133,13 +128,9 @@ int main() {
 using namespace std;
 
 int main() {
-    int n, sum = 0;
+    int n, sum = 0, x;
     cin >> n;
-    for (int i = 1; i < n; i++) {
-        int x;
-        cin >> x;
-        sum += x;
-    }
+    for (int i = 1; i < n; i++) { cin >> x; sum += x; }
     cout << n * (n + 1) / 2 - sum;
     return 0;
 }
@@ -225,8 +216,7 @@ int main() {
     for (int i = 0; i < n1; i++) cout << a[i] << " ";
     for (int j = 0; j < n2; j++) {
         bool found = false;
-        for (int i = 0; i < n1; i++)
-            if (b[j] == a[i]) found = true;
+        for (int i = 0; i < n1; i++) if (b[j] == a[i]) {found = true};
         if (!found) cout << b[j] << " ";
     }
     return 0;
@@ -256,8 +246,7 @@ int main() {
         if (ch >= 'a' && ch <= 'z') freq[ch - 'a']++;
     }
     for (int i = 0; i < 26; i++)
-        if (freq[i] > 0)
-            cout << char(i + 'a') << " : " << freq[i] << endl;
+        if (freq[i] > 0) {cout << char(i + 'a') << " : " << freq[i] << endl};
     return 0;
 }
 \end{code}

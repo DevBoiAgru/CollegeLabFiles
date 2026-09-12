@@ -30,29 +30,21 @@ protected:
 
 public:
     void inputEmployee() {
-        cout << "Enter name: ";
-        getline(cin, name);
-        cout << "Enter salary: ";
-        cin >> salary;
-        cin.ignore();
+        cout << "Enter name: "; getline(cin, name);
+        cout << "Enter salary: "; cin >> salary; cin.ignore();
     }
-
     void displayEmployee() const {
-        cout << "Name: " << name << endl;
-        cout << "Salary: " << salary << endl;
+        cout << "Name: " << name << "\nSalary: " << salary << endl;
     }
 };
 
 class Manager : public Employee {
     string department;
-
 public:
     void input() {
         inputEmployee();
-        cout << "Enter department: ";
-        getline(cin, department);
+        cout << "Enter department: "; getline(cin, department);
     }
-
     void display() const {
         displayEmployee();
         cout << "Department: " << department << endl;
@@ -62,10 +54,8 @@ public:
 int main() {
     Manager manager;
     manager.input();
-
     cout << "\nManager Details" << endl;
     manager.display();
-
     return 0;
 }
 \end{code}
@@ -94,40 +84,22 @@ public:
 
 class Rectangle : public Shape {
     double length, width;
-
 public:
-    Rectangle(double l, double w) {
-        length = l;
-        width = w;
-    }
-
-    double area() const override {
-        return length * width;
-    }
+    Rectangle(double l, double w) : length(l), width(w) {}
+    double area() const override { return length * width; }
 };
 
 class Circle : public Shape {
     double radius;
-
 public:
-    Circle(double r) {
-        radius = r;
-    }
-
-    double area() const override {
-        return 3.14159 * radius * radius;
-    }
+    Circle(double r) : radius(r) {}
+    double area() const override { return 3.14159 * radius * radius; }
 };
 
 int main() {
-    Rectangle rectangle(10, 5);
-    Circle circle(7);
-
+    Rectangle rectangle(10, 5); Circle circle(7);
     Shape* shapes[2] = {&rectangle, &circle};
-
-    for (int i = 0; i < 2; i++)
-        cout << "Area: " << shapes[i]->area() << endl;
-
+    for (int i = 0; i < 2; i++) cout << "Area: " << shapes[i]->area() << endl;
     return 0;
 }
 \end{code}
@@ -152,45 +124,30 @@ using namespace std;
 class Vehicle {
 protected:
     string make, model;
-
 public:
-    Vehicle(string m, string mo) {
-        make = m;
-        model = mo;
-    }
-
+    Vehicle(string m, string mo) : make(m), model(mo) {}
     virtual void display() const {
-        cout << "Make: " << make << endl;
-        cout << "Model: " << model << endl;
+        cout << "Make: " << make << "\nModel: " << model << endl;
     }
-
     virtual ~Vehicle() {}
 };
 
 class Car : public Vehicle {
     int numDoors;
-
 public:
-    Car(string m, string mo, int doors)
-        : Vehicle(m, mo), numDoors(doors) {}
-
+    Car(string m, string mo, int doors) : Vehicle(m, mo), numDoors(doors) {}
     void display() const override {
-        cout << "Car" << endl;
-        Vehicle::display();
+        cout << "Car" << endl; Vehicle::display();
         cout << "Number of doors: " << numDoors << endl;
     }
 };
 
 class Bike : public Vehicle {
     bool hasGear;
-
 public:
-    Bike(string m, string mo, bool gear)
-        : Vehicle(m, mo), hasGear(gear) {}
-
+    Bike(string m, string mo, bool gear) : Vehicle(m, mo), hasGear(gear) {}
     void display() const override {
-        cout << "Bike" << endl;
-        Vehicle::display();
+        cout << "Bike" << endl; Vehicle::display();
         cout << "Has gear: " << (hasGear ? "Yes" : "No") << endl;
     }
 };
@@ -198,11 +155,7 @@ public:
 int main() {
     Car car("Toyota", "Corolla", 4);
     Bike bike("Honda", "Shine", true);
-
-    car.display();
-    cout << endl;
-    bike.display();
-
+    car.display(); cout << endl; bike.display();
     return 0;
 }
 \end{code}
@@ -226,63 +179,40 @@ using namespace std;
 
 class Person {
 protected:
-    string name;
-    int age;
-
+    string name; int age;
 public:
     Person(string n, int a) : name(n), age(a) {}
-
     virtual void display() const {
-        cout << "Name: " << name << endl;
-        cout << "Age: " << age << endl;
+        cout << "Name: " << name << "\nAge: " << age << endl;
     }
-
     virtual ~Person() {}
 };
 
 class Student : public Person {
-    int rollNo;
-    double marks;
-
+    int rollNo; double marks;
 public:
-    Student(string n, int a, int r, double m)
-        : Person(n, a), rollNo(r), marks(m) {}
-
+    Student(string n, int a, int r, double m) : Person(n, a), rollNo(r), marks(m) {}
     void display() const override {
-        cout << "Student" << endl;
-        Person::display();
-        cout << "Roll Number: " << rollNo << endl;
-        cout << "Marks: " << marks << endl;
+        cout << "Student" << endl; Person::display();
+        cout << "Roll Number: " << rollNo << "\nMarks: " << marks << endl;
     }
 };
 
 class Teacher : public Person {
-    string subject;
-    double salary;
-
+    string subject; double salary;
 public:
-    Teacher(string n, int a, string s, double sal)
-        : Person(n, a), subject(s), salary(sal) {}
-
+    Teacher(string n, int a, string s, double sal) : Person(n, a), subject(s), salary(sal) {}
     void display() const override {
-        cout << "Teacher" << endl;
-        Person::display();
-        cout << "Subject: " << subject << endl;
-        cout << "Salary: " << salary << endl;
+        cout << "Teacher" << endl; Person::display();
+        cout << "Subject: " << subject << "\nSalary: " << salary << endl;
     }
 };
 
 int main() {
     Student student("Rahul", 20, 101, 88.5);
     Teacher teacher("Mr. Sharma", 40, "C++", 50000);
-
     Person* people[2] = {&student, &teacher};
-
-    for (int i = 0; i < 2; i++) {
-        people[i]->display();
-        cout << endl;
-    }
-
+    for (int i = 0; i < 2; i++) { people[i]->display(); cout << endl; }
     return 0;
 }
 \end{code}
@@ -305,66 +235,39 @@ using namespace std;
 
 class Account {
 protected:
-    int accountNumber;
-    double balance;
-
+    int accountNumber; double balance;
 public:
-    Account(int number, double amount)
-        : accountNumber(number), balance(amount) {}
-
+    Account(int number, double amount) : accountNumber(number), balance(amount) {}
     virtual void withdraw(double amount) = 0;
-
     void display() const {
-        cout << "Account Number: " << accountNumber << endl;
-        cout << "Balance: " << balance << endl;
+        cout << "Account Number: " << accountNumber << "\nBalance: " << balance << endl;
     }
-
     virtual ~Account() {}
 };
 
 class SavingsAccount : public Account {
 public:
-    SavingsAccount(int number, double amount)
-        : Account(number, amount) {}
-
+    SavingsAccount(int number, double amount) : Account(number, amount) {}
     void withdraw(double amount) override {
-        if (balance - amount >= 500) {
-            balance -= amount;
-            cout << "Savings withdrawal successful" << endl;
-        } else {
-            cout << "Savings account must maintain Rs. 500" << endl;
-        }
+        if (balance - amount >= 500) { balance -= amount; cout << "Savings withdrawal successful" << endl; }
+        else cout << "Savings account must maintain Rs. 500" << endl;
     }
 };
 
 class CurrentAccount : public Account {
 public:
-    CurrentAccount(int number, double amount)
-        : Account(number, amount) {}
-
+    CurrentAccount(int number, double amount) : Account(number, amount) {}
     void withdraw(double amount) override {
-        if (amount <= balance + 1000) {
-            balance -= amount;
-            cout << "Current withdrawal successful" << endl;
-        } else {
-            cout << "Overdraft limit exceeded" << endl;
-        }
+        if (amount <= balance + 1000) { balance -= amount; cout << "Current withdrawal successful" << endl; }
+        else cout << "Overdraft limit exceeded" << endl;
     }
 };
 
 int main() {
-    SavingsAccount savings(101, 5000);
-    CurrentAccount current(102, 5000);
-
-    savings.withdraw(4700);
-    current.withdraw(5500);
-
-    cout << endl << "Savings Account" << endl;
-    savings.display();
-
-    cout << endl << "Current Account" << endl;
-    current.display();
-
+    SavingsAccount savings(101, 5000); CurrentAccount current(102, 5000);
+    savings.withdraw(4700); current.withdraw(5500);
+    cout << endl << "Savings Account" << endl; savings.display();
+    cout << endl << "Current Account" << endl; current.display();
     return 0;
 }
 \end{code}
@@ -387,34 +290,22 @@ using namespace std;
 
 class Animal {
 public:
-    void describe() const {
-        cout << "Animal: This is an animal." << endl;
-    }
+    void describe() const { cout << "Animal: This is an animal." << endl; }
 };
 
 class Mammal : public Animal {
 public:
-    void describeMammal() const {
-        cout << "Mammal: This is a mammal."
-             << endl;
-    }
+    void describeMammal() const { cout << "Mammal: This is a mammal." << endl; }
 };
 
 class Dog : public Mammal {
 public:
-    void describeDog() const {
-        cout << "Dog: This is a dog."
-             << endl;
-    }
+    void describeDog() const { cout << "Dog: This is a dog." << endl; }
 };
 
 int main() {
     Dog dog;
-
-    dog.describe();
-    dog.describeMammal();
-    dog.describeDog();
-
+    dog.describe(); dog.describeMammal(); dog.describeDog();
     return 0;
 }
 \end{code}
@@ -438,44 +329,31 @@ using namespace std;
 class Academic {
 protected:
     int marks;
-
 public:
     Academic(int m) : marks(m) {}
-
-    void display() const {
-        cout << "Academic Marks: " << marks << endl;
-    }
+    void display() const { cout << "Academic Marks: " << marks << endl; }
 };
 
 class Sports {
 protected:
     int marks;
-
 public:
     Sports(int m) : marks(m) {}
-
-    void display() const {
-        cout << "Sports Marks: " << marks << endl;
-    }
+    void display() const { cout << "Sports Marks: " << marks << endl; }
 };
 
 class Result : public Academic, public Sports {
 public:
-    Result(int academicMarks, int sportsMarks)
-        : Academic(academicMarks), Sports(sportsMarks) {}
-
+    Result(int academicMarks, int sportsMarks) : Academic(academicMarks), Sports(sportsMarks) {}
     void displayResult() const {
-        Academic::display();
-        Sports::display();
-        cout << "Total Marks: " << Academic::marks + Sports::marks
-             << endl;
+        Academic::display(); Sports::display();
+        cout << "Total Marks: " << Academic::marks + Sports::marks << endl;
     }
 };
 
 int main() {
     Result result(85, 15);
     result.displayResult();
-
     return 0;
 }
 \end{code}
@@ -498,30 +376,19 @@ using namespace std;
 class Base {
 protected:
     int data;
-
 public:
-    Base() {
-        data = 10;
-    }
+    Base() : data(10) {}
 };
 
 class Derived : public Base {
 public:
-    void modify() {
-        data += 20;
-    }
-
-    void display() const {
-        cout << "Data: " << data << endl;
-    }
+    void modify() { data += 20; }
+    void display() const { cout << "Data: " << data << endl; }
 };
 
 int main() {
     Derived object;
-
-    object.modify();
-    object.display();
-
+    object.modify(); object.display();
     return 0;
 }
 \end{code}
@@ -547,51 +414,35 @@ using namespace std;
 class Employee {
 protected:
     string name;
-
 public:
     Employee(string n) : name(n) {}
-
-    void displayEmployee() const {
-        cout << "Employee Name: " << name << endl;
-    }
+    void displayEmployee() const { cout << "Employee Name: " << name << endl; }
 };
 
 class Engineer : virtual public Employee {
 public:
     Engineer(string n) : Employee(n) {}
-
-    void displayEngineer() const {
-        cout << "Engineer branch" << endl;
-    }
+    void displayEngineer() const { cout << "Engineer branch" << endl; }
 };
 
 class Manager : virtual public Employee {
 public:
     Manager(string n) : Employee(n) {}
-
-    void displayManager() const {
-        cout << "Manager branch" << endl;
-    }
+    void displayManager() const { cout << "Manager branch" << endl; }
 };
 
 class SoftwareEngineer : public Engineer, public Manager {
 public:
-    SoftwareEngineer(string n)
-        : Employee(n), Engineer(n), Manager(n) {}
-
+    SoftwareEngineer(string n) : Employee(n), Engineer(n), Manager(n) {}
     void display() const {
-        displayEmployee();
-        displayEngineer();
-        displayManager();
-        cout << "SoftwareEngineer: Single Employee object shared."
-             << endl;
+        displayEmployee(); displayEngineer(); displayManager();
+        cout << "SoftwareEngineer: Single Employee object shared." << endl;
     }
 };
 
 int main() {
     SoftwareEngineer softwareEngineer("Amit");
     softwareEngineer.display();
-
     return 0;
 }
 \end{code}

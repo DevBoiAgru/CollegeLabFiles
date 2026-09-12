@@ -23,19 +23,16 @@ using namespace std;
 class Polar {
     float radius, angle;
 public:
-    Polar(float r = 0, float a = 0) { radius = r; angle = a; }
+    Polar(float r = 0, float a = 0) : radius(r), angle(a) {}
 
     Polar operator+(Polar other) {
-        float x = radius * cos(angle * 3.14159 / 180)
-                + other.radius * cos(other.angle * 3.14159 / 180);
-        float y = radius * sin(angle * 3.14159 / 180)
-                + other.radius * sin(other.angle * 3.14159 / 180);
+        float x = radius * cos(angle * 3.14159 / 180) + other.radius * cos(other.angle * 3.14159 / 180);
+        float y = radius * sin(angle * 3.14159 / 180) + other.radius * sin(other.angle * 3.14159 / 180);
         return Polar(sqrt(x * x + y * y), atan2(y, x) * 180 / 3.14159);
     }
 
     void display() {
-        cout << "Radius: " << radius << endl;
-        cout << "Angle: " << angle << " degrees" << endl;
+        cout << "Radius: " << radius << "\nAngle: " << angle << " degrees" << endl;
     }
 };
 
@@ -64,34 +61,17 @@ using namespace std;
 
 class Currency {
     int rupees, paise;
-
-    void convert() {
-        rupees += paise / 100;
-        paise = paise % 100;
-    }
-
+    void convert() { rupees += paise / 100; paise %= 100; }
 public:
-    Currency(int r = 0, int p = 0) {
-        rupees = r; paise = p; convert();
-    }
+    Currency(int r = 0, int p = 0) : rupees(r), paise(p) { convert(); }
 
-    Currency operator+(Currency o) {
-        return Currency(rupees + o.rupees, paise + o.paise);
-    }
-    Currency operator-(Currency o) {
-        return Currency(0, (rupees * 100 + paise) - (o.rupees * 100 + o.paise));
-    }
-    Currency operator*(Currency o) {
-        return Currency(0, (rupees * 100 + paise) * (o.rupees * 100 + o.paise) / 100);
-    }
-    bool operator==(Currency o) {
-        return rupees == o.rupees && paise == o.paise;
-    }
+    Currency operator+(Currency o) { return Currency(rupees + o.rupees, paise + o.paise); }
+    Currency operator-(Currency o) { return Currency(0, (rupees * 100 + paise) - (o.rupees * 100 + o.paise)); }
+    Currency operator*(Currency o) { return Currency(0, (rupees * 100 + paise) * (o.rupees * 100 + o.paise) / 100); }
+    bool operator==(Currency o) { return rupees == o.rupees && paise == o.paise; }
 
     void display() {
-        cout << "Rs. " << rupees << ".";
-        if (paise < 10) cout << "0";
-        cout << paise << endl;
+        cout << "Rs. " << rupees << "." << (paise < 10 ? "0" : "") << paise << endl;
     }
 };
 
@@ -100,8 +80,7 @@ int main() {
     cout << "Addition: "; (a + b).display();
     cout << "Subtraction: "; (a - b).display();
     cout << "Multiplication: "; (a * b).display();
-    cout << "Equal: ";
-    cout << (a == b ? "Yes" : "No");
+    cout << "Equal: " << (a == b ? "Yes" : "No");
     return 0;
 }
 \end{code}
@@ -122,10 +101,8 @@ using namespace std;
 class Temperature {
     float celsius;
 public:
-    Temperature(float value = 0) { celsius = value; }
-    Temperature operator+(Temperature o) {
-        return Temperature(celsius + o.celsius);
-    }
+    Temperature(float value = 0) : celsius(value) {}
+    Temperature operator+(Temperature o) { return Temperature(celsius + o.celsius); }
     operator float() { return celsius * 9 / 5 + 32; }
     operator int() { return (int)(celsius + 0.5); }
     void display() { cout << celsius << " C" << endl; }
@@ -133,12 +110,9 @@ public:
 
 int main() {
     Temperature result = Temperature(25) + Temperature(10);
-    cout << "Sum: ";
-    result.display();
-    float fahrenheit = result;
-    int roundedCelsius = result;
-    cout << "Fahrenheit: " << fahrenheit << endl;
-    cout << "Rounded Celsius: " << roundedCelsius << endl;
+    cout << "Sum: "; result.display();
+    float fahrenheit = result; int roundedCelsius = result;
+    cout << "Fahrenheit: " << fahrenheit << "\nRounded Celsius: " << roundedCelsius << endl;
     return 0;
 }
 \end{code}
@@ -157,29 +131,20 @@ int main() {
 using namespace std;
 
 class Item {
-    string name;
-    float price;
-    int quantity;
+    string name; float price; int quantity;
 public:
-    Item(string n = "", float p = 0, int q = 0) {
-        name = n; price = p; quantity = q;
-    }
+    Item(string n = "", float p = 0, int q = 0) : name(n), price(p), quantity(q) {}
     Item operator+(Item o) {
-        if (name == o.name)
-            return Item(name, price, quantity + o.quantity);
-        return *this;
+        return (name == o.name) ? Item(name, price, quantity + o.quantity) : *this;
     }
     float operator*() { return price * quantity; }
-    void display() {
-        cout << name << " " << price << " " << quantity << endl;
-    }
+    void display() { cout << name << " " << price << " " << quantity << endl; }
 };
 
 int main() {
     Item a("Pen", 10, 3), b("Pen", 10, 5);
     Item total = a + b;
-    cout << "Combined item: ";
-    total.display();
+    cout << "Combined item: "; total.display();
     cout << "Total cost: Rs. " << *total << endl;
     return 0;
 }
@@ -210,37 +175,22 @@ class Date {
     }
 
 public:
-    Date(int d = 1, int m = 1, int y = 2000) {
-        day = d; month = m; year = y;
-    }
-
+    Date(int d = 1, int m = 1, int y = 2000) : day(d), month(m), year(y) {}
     Date operator++() {
-        day++;
-        if (day > daysInMonth()) {
-            day = 1;
-            month++;
-            if (month > 12) { month = 1; year++; }
-        }
+        if (++day > daysInMonth()) { day = 1; if (++month > 12) { month = 1; year++; } }
         return *this;
     }
-
     int operator-(Date o) {
-        return (year * 365 + month * 30 + day)
-             - (o.year * 365 + o.month * 30 + o.day);
+        return (year * 365 + month * 30 + day) - (o.year * 365 + o.month * 30 + o.day);
     }
-
-    void display() {
-        cout << day << "/" << month << "/" << year << endl;
-    }
+    void display() { cout << day << "/" << month << "/" << year << endl; }
 };
 
 int main() {
     Date first(28, 2, 2024), second(1, 3, 2024);
-    cout << "Before increment: ";
-    first.display();
+    cout << "Before increment: "; first.display();
     ++first;
-    cout << "After increment: ";
-    first.display();
+    cout << "After increment: "; first.display();
     cout << "Difference: " << second - first << " days" << endl;
     return 0;
 }
@@ -262,22 +212,18 @@ using namespace std;
 class Position {
     int x, y;
 public:
-    Position(int xVal = 0, int yVal = 0) { x = xVal; y = yVal; }
+    Position(int xVal = 0, int yVal = 0) : x(xVal), y(yVal) {}
     Position operator+(Position o) { return Position(x + o.x, y + o.y); }
     bool operator==(Position o) { return x == o.x && y == o.y; }
     friend ostream& operator<<(ostream& out, Position p) {
-        out << "(" << p.x << ", " << p.y << ")";
-        return out;
+        return out << "(" << p.x << ", " << p.y << ")";
     }
 };
 
 int main() {
     Position a(10, 20), b(5, 8);
     cout << "New position: " << a + b << endl;
-    if (a == b)
-        cout << "Positions are equal";
-    else
-        cout << "Positions are not equal";
+    cout << (a == b ? "Positions are equal" : "Positions are not equal");
     return 0;
 }
 \end{code}
@@ -296,40 +242,21 @@ int main() {
 using namespace std;
 
 class Book {
-    string title;
-    int copiesAvailable;
+    string title; int copiesAvailable;
 public:
-    Book(string t, int copies) {
-        title = t; copiesAvailable = copies;
-    }
-    Book operator--() {
-        if (copiesAvailable > 0) copiesAvailable--;
-        return *this;
-    }
-    Book operator++() {
-        copiesAvailable++;
-        return *this;
-    }
+    Book(string t, int copies) : title(t), copiesAvailable(copies) {}
+    Book operator--() { if (copiesAvailable > 0) copiesAvailable--; return *this; }
+    Book operator++() { copiesAvailable++; return *this; }
     bool operator==(Book o) { return title == o.title; }
-    void display() {
-        cout << title << ": " << copiesAvailable << " copies" << endl;
-    }
+    void display() { cout << title << ": " << copiesAvailable << " copies" << endl; }
 };
 
 int main() {
     Book a("C++ Programming", 5), b("C++ Programming", 2);
-    cout << "Before issuing: ";
-    a.display();
-    --a;
-    cout << "After issuing: ";
-    a.display();
-    ++a;
-    cout << "After returning: ";
-    a.display();
-    if (a == b)
-        cout << "Books are the same";
-    else
-        cout << "Books are different";
+    cout << "Before issuing: "; a.display();
+    --a; cout << "After issuing: "; a.display();
+    ++a; cout << "After returning: "; a.display();
+    cout << (a == b ? "Books are the same" : "Books are different");
     return 0;
 }
 \end{code}
@@ -348,19 +275,15 @@ int main() {
 using namespace std;
 
 class Polynomial {
-    int coefficients[10];
-    int degree;
+    int coefficients[10], degree;
 public:
-    Polynomial(int d) {
-        degree = d;
-        for (int i = 0; i <= degree; i++)
-            cin >> coefficients[i];
+    Polynomial(int d) : degree(d) {
+        for (int i = 0; i <= degree; i++) cin >> coefficients[i];
     }
     bool operator==(Polynomial o) {
         if (degree != o.degree) return false;
         for (int i = 0; i <= degree; i++)
-            if (coefficients[i] != o.coefficients[i])
-                return false;
+            if (coefficients[i] != o.coefficients[i]) return false;
         return true;
     }
     bool operator<(Polynomial o) { return degree < o.degree; }
@@ -371,16 +294,8 @@ int main() {
     Polynomial first(2);
     cout << "Enter coefficients of second polynomial:" << endl;
     Polynomial second(2);
-
-    if (first == second)
-        cout << "Polynomials are identical" << endl;
-    else
-        cout << "Polynomials are different" << endl;
-
-    if (first < second)
-        cout << "First polynomial has smaller degree";
-    else
-        cout << "First polynomial does not have smaller degree";
+    cout << (first == second ? "Polynomials are identical" : "Polynomials are different") << endl;
+    cout << (first < second ? "First polynomial has smaller degree" : "First polynomial does not have smaller degree");
     return 0;
 }
 \end{code}
@@ -399,14 +314,11 @@ int main() {
 using namespace std;
 
 class Matrix {
-    int matrix[10][10];
-    int rows, columns;
+    int matrix[10][10], rows, columns;
 public:
-    Matrix(int r, int c) {
-        rows = r; columns = c;
+    Matrix(int r, int c) : rows(r), columns(c) {
         for (int i = 0; i < rows; i++)
-            for (int j = 0; j < columns; j++)
-                cin >> matrix[i][j];
+            for (int j = 0; j < columns; j++) cin >> matrix[i][j];
     }
     int& operator()(int i, int j) { return matrix[i][j]; }
 };
@@ -434,34 +346,25 @@ int main() {
 using namespace std;
 
 class Cart {
-    string items[20];
-    int itemCount;
+    string items[20]; int itemCount;
 public:
-    Cart() { itemCount = 0; }
+    Cart() : itemCount(0) {}
     void addItem(string item) { items[itemCount++] = item; }
     Cart operator+(Cart o) {
         Cart result = *this;
-        for (int i = 0; i < o.itemCount; i++)
-            result.addItem(o.items[i]);
+        for (int i = 0; i < o.itemCount; i++) result.addItem(o.items[i]);
         return result;
     }
     string operator[](int i) { return items[i]; }
-    void display() {
-        for (int i = 0; i < itemCount; i++)
-            cout << items[i] << endl;
-    }
+    void display() { for (int i = 0; i < itemCount; i++) cout << items[i] << endl; }
 };
 
 int main() {
     Cart a, b;
-    a.addItem("Book");
-    a.addItem("Pen");
-    b.addItem("Bag");
-    b.addItem("Notebook");
-
+    a.addItem("Book"); a.addItem("Pen");
+    b.addItem("Bag"); b.addItem("Notebook");
     Cart combined = a + b;
-    cout << "Combined cart:" << endl;
-    combined.display();
+    cout << "Combined cart:" << endl; combined.display();
     cout << "Item at index 2: " << combined[2] << endl;
     return 0;
 }
@@ -483,9 +386,7 @@ using namespace std;
 class Fraction {
     int numerator, denominator;
 public:
-    Fraction(int top = 0, int bottom = 1) {
-        numerator = top; denominator = bottom;
-    }
+    Fraction(int top = 0, int bottom = 1) : numerator(top), denominator(bottom) {}
     Fraction operator/(Fraction o) {
         return Fraction(numerator * o.denominator, denominator * o.numerator);
     }
@@ -495,8 +396,7 @@ public:
 
 int main() {
     Fraction result = Fraction(3, 4) / Fraction(2, 5);
-    cout << "Division: ";
-    result.display();
+    cout << "Division: "; result.display();
     double decimal = result;
     cout << "Decimal: " << decimal << endl;
     return 0;

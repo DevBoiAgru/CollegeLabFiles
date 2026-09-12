@@ -24,18 +24,14 @@ class Item {
     int serialNumber;
 public:
     Item() { serialNumber = ++count; }
-    void display() {
-        cout << "Serial Number: " << serialNumber << endl;
-    }
+    void display() { cout << "Serial Number: " << serialNumber << endl; }
 };
 
 int Item::count = 0;
 
 int main() {
     Item item1, item2, item3;
-    item1.display();
-    item2.display();
-    item3.display();
+    item1.display(); item2.display(); item3.display();
     return 0;
 }
 \end{code}
@@ -57,7 +53,7 @@ class tollBooth {
     unsigned int totalCars;
     double totalCash;
 public:
-    tollBooth() { totalCars = 0; totalCash = 0; }
+    tollBooth() : totalCars(0), totalCash(0) {}
     void payingCar() { totalCars++; totalCash += 0.50; }
     void nopayCar() { totalCars++; }
     void display() const {
@@ -69,8 +65,7 @@ public:
 int main() {
     tollBooth booth;
     char choice;
-    while (true) {
-        cin >> choice;
+    while (cin >> choice) {
         if (choice == 'p') booth.payingCar();
         else if (choice == 'n') booth.nopayCar();
         else if (choice == 'q') break;
@@ -94,29 +89,24 @@ int main() {
 using namespace std;
 
 class Matrix {
-    int matrix[10][10];
-    int rows, columns;
+    int matrix[10][10], rows, columns;
 public:
     void input() {
         cin >> rows >> columns;
         for (int i = 0; i < rows; i++)
-            for (int j = 0; j < columns; j++)
-                cin >> matrix[i][j];
+            for (int j = 0; j < columns; j++) cin >> matrix[i][j];
     }
     void transpose() {
         cout << "Transpose:" << endl;
         for (int j = 0; j < columns; j++) {
-            for (int i = 0; i < rows; i++)
-                cout << matrix[i][j] << " ";
+            for (int i = 0; i < rows; i++) cout << matrix[i][j] << " ";
             cout << endl;
         }
     }
 };
 
 int main() {
-    Matrix m;
-    m.input();
-    m.transpose();
+    Matrix m; m.input(); m.transpose();
     return 0;
 }
 \end{code}
@@ -137,22 +127,13 @@ using namespace std;
 class ComplexNumber {
     float real, imaginary;
 public:
-    ComplexNumber(float r = 0, float i = 0) {
-        real = r; imaginary = i;
-    }
-    ComplexNumber add(ComplexNumber n) {
-        return ComplexNumber(real + n.real, imaginary + n.imaginary);
-    }
-    ComplexNumber subtract(ComplexNumber n) {
-        return ComplexNumber(real - n.real, imaginary - n.imaginary);
-    }
+    ComplexNumber(float r = 0, float i = 0) : real(r), imaginary(i) {}
+    ComplexNumber add(ComplexNumber n) { return ComplexNumber(real + n.real, imaginary + n.imaginary); }
+    ComplexNumber subtract(ComplexNumber n) { return ComplexNumber(real - n.real, imaginary - n.imaginary); }
     void display() {
         cout << real;
-        if (imaginary >= 0)
-            cout << " + " << imaginary << "i";
-        else
-            cout << " - " << -imaginary << "i";
-        cout << endl;
+        if (imaginary >= 0) cout << " + " << imaginary << "i\n";
+        else cout << " - " << -imaginary << "i\n";
     }
 };
 
@@ -160,10 +141,8 @@ int main() {
     float r1, i1, r2, i2;
     cin >> r1 >> i1 >> r2 >> i2;
     ComplexNumber a(r1, i1), b(r2, i2);
-    cout << "Addition: ";
-    a.add(b).display();
-    cout << "Subtraction: ";
-    a.subtract(b).display();
+    cout << "Addition: "; a.add(b).display();
+    cout << "Subtraction: "; a.subtract(b).display();
     return 0;
 }
 \end{code}
@@ -182,25 +161,17 @@ int main() {
 using namespace std;
 
 class angle {
-    int degrees;
-    float minutes;
-    char direction;
+    int degrees; float minutes; char direction;
 public:
-    angle(int d = 0, float m = 0, char dir = 'N') {
-        degrees = d; minutes = m; direction = dir;
-    }
+    angle(int d = 0, float m = 0, char dir = 'N') : degrees(d), minutes(m), direction(dir) {}
     void getAngle() { cin >> degrees >> minutes >> direction; }
     char getDirection() const { return direction; }
-    void display() const {
-        cout << degrees << "\xF8" << minutes << "' " << direction << endl;
-    }
+    void display() const { cout << degrees << "\xF8" << minutes << "' " << direction << endl; }
 };
 
 int main() {
     angle first(149, 34.8, 'W');
-    cout << "Initial angle: ";
-    first.display();
-
+    cout << "Initial angle: "; first.display();
     angle user;
     while (true) {
         user.getAngle();
@@ -225,16 +196,10 @@ int main() {
 using namespace std;
 
 class BankAccount {
-    int accountNumber;
-    string holderName;
-    double balance, interestRate;
+    int accountNumber; string holderName; double balance, interestRate;
 public:
-    BankAccount(int num, string name, double amt, double rate) {
-        accountNumber = num;
-        holderName = name;
-        balance = amt;
-        interestRate = rate;
-    }
+    BankAccount(int num, string name, double amt, double rate)
+        : accountNumber(num), holderName(name), balance(amt), interestRate(rate) {}
     void deposit(double amt) { balance += amt; }
     void withdraw(double amt) {
         if (amt <= balance) balance -= amt;
@@ -242,24 +207,16 @@ public:
     }
     void calculateInterest() { balance += balance * interestRate / 100; }
     void transfer(BankAccount &other, double amt) {
-        if (amt <= balance) {
-            balance -= amt;
-            other.balance += amt;
-        }
+        if (amt <= balance) { balance -= amt; other.balance += amt; }
     }
-    void display() const {
-        cout << holderName << ": " << balance << endl;
-    }
+    void display() const { cout << holderName << ": " << balance << endl; }
 };
 
 int main() {
     BankAccount a1(101, "John", 1000, 5), a2(102, "Alex", 500, 5);
-    a1.deposit(200);
-    a1.withdraw(100);
-    a1.calculateInterest();
+    a1.deposit(200); a1.withdraw(100); a1.calculateInterest();
     a1.transfer(a2, 300);
-    a1.display();
-    a2.display();
+    a1.display(); a2.display();
     return 0;
 }
 \end{code}
@@ -278,67 +235,35 @@ int main() {
 using namespace std;
 
 class ATM {
-    int pin, transactionCount;
-    double balance;
-    string history[20];
-
+    int pin, transactionCount; double balance; string history[20];
     bool checkPin(int enteredPin) { return enteredPin == pin; }
-
 public:
-    ATM(int userPin, double amount) {
-        pin = userPin;
-        balance = amount;
-        transactionCount = 0;
-    }
+    ATM(int userPin, double amount) : pin(userPin), balance(amount), transactionCount(0) {}
 
     void withdraw(int enteredPin, double amount) {
-        if (!checkPin(enteredPin)) {
-            cout << "Wrong PIN" << endl;
-            return;
-        }
-        if (amount <= balance) {
-            balance -= amount;
-            history[transactionCount++] = "Withdrawal";
-            cout << "Cash withdrawn" << endl;
-        } else
-            cout << "Insufficient balance" << endl;
+        if (!checkPin(enteredPin)) { cout << "Wrong PIN" << endl; return; }
+        if (amount <= balance) { balance -= amount; history[transactionCount++] = "Withdrawal"; cout << "Cash withdrawn" << endl; }
+        else cout << "Insufficient balance" << endl;
     }
-
     void deposit(int enteredPin, double amount) {
-        if (!checkPin(enteredPin)) {
-            cout << "Wrong PIN" << endl;
-            return;
-        }
-        balance += amount;
-        history[transactionCount++] = "Deposit";
-        cout << "Money deposited" << endl;
+        if (!checkPin(enteredPin)) { cout << "Wrong PIN" << endl; return; }
+        balance += amount; history[transactionCount++] = "Deposit"; cout << "Money deposited" << endl;
     }
-
     void checkBalance(int enteredPin) {
-        if (!checkPin(enteredPin)) {
-            cout << "Wrong PIN" << endl;
-            return;
-        }
+        if (!checkPin(enteredPin)) { cout << "Wrong PIN" << endl; return; }
         cout << "Balance: " << balance << endl;
     }
-
     void miniStatement(int enteredPin) {
-        if (!checkPin(enteredPin)) {
-            cout << "Wrong PIN" << endl;
-            return;
-        }
+        if (!checkPin(enteredPin)) { cout << "Wrong PIN" << endl; return; }
         cout << "Mini Statement:" << endl;
-        for (int i = 0; i < transactionCount; i++)
-            cout << history[i] << endl;
+        for (int i = 0; i < transactionCount; i++) cout << history[i] << endl;
     }
 };
 
 int main() {
     ATM atm(1234, 5000);
-    atm.deposit(1234, 1000);
-    atm.withdraw(1234, 500);
-    atm.checkBalance(1234);
-    atm.miniStatement(1234);
+    atm.deposit(1234, 1000); atm.withdraw(1234, 500);
+    atm.checkBalance(1234); atm.miniStatement(1234);
     return 0;
 }
 \end{code}
@@ -359,24 +284,16 @@ using namespace std;
 class FileSession {
     string fileName;
 public:
-    FileSession(string name) {
-        fileName = name;
-        cout << "Opening file: " << fileName << endl;
-    }
-    ~FileSession() {
-        cout << "Closing file: " << fileName << endl;
-    }
+    FileSession(string name) : fileName(name) { cout << "Opening file: " << fileName << endl; }
+    ~FileSession() { cout << "Closing file: " << fileName << endl; }
 };
 
 int main() {
     cout << "Stack objects:" << endl;
     {
-        FileSession file1("one.txt");
-        FileSession file2("two.txt");
-        FileSession file3("three.txt");
+        FileSession file1("one.txt"), file2("two.txt"), file3("three.txt");
         cout << "End of scope" << endl;
     }
-
     cout << endl << "Dynamic object:" << endl;
     FileSession *file4 = new FileSession("four.txt");
     cout << "Deleting dynamic object" << endl;
@@ -401,25 +318,18 @@ using namespace std;
 class TempStorage {
     string fileName;
 public:
-    TempStorage(string name) {
-        fileName = name;
-        cout << "Creating temporary file: " << fileName << endl;
-    }
-    ~TempStorage() {
-        cout << "Deleting temporary file: " << fileName << endl;
-    }
+    TempStorage(string name) : fileName(name) { cout << "Creating temporary file: " << fileName << endl; }
+    ~TempStorage() { cout << "Deleting temporary file: " << fileName << endl; }
 };
 
 void createTemporaryFiles() {
-    TempStorage file1("temp1.tmp");
-    TempStorage file2("temp2.tmp");
+    TempStorage file1("temp1.tmp"), file2("temp2.tmp");
     cout << "Function is running" << endl;
 }
 
 int main() {
     cout << "Inside function:" << endl;
     createTemporaryFiles();
-
     cout << endl << "Dynamic temporary file:" << endl;
     TempStorage *file3 = new TempStorage("temp3.tmp");
     cout << "Deleting dynamically created file" << endl;
@@ -442,30 +352,20 @@ int main() {
 using namespace std;
 
 class ElectricityBill {
-    string customerName;
-    int units;
-    double totalBill;
+    string customerName; int units; double totalBill;
 public:
-    ElectricityBill(string name, int usedUnits) {
-        customerName = name;
-        units = usedUnits;
-        totalBill = 0;
-    }
+    ElectricityBill(string name, int usedUnits) : customerName(name), units(usedUnits), totalBill(0) {}
     void calculateBill() { totalBill = units * 1.50; }
     void display() {
-        cout << "Customer: " << customerName << endl;
-        cout << "Units: " << units << endl;
-        cout << "Total Bill: Rs. " << totalBill << endl;
+        cout << "Customer: " << customerName << "\nUnits: " << units << "\nTotal Bill: Rs. " << totalBill << endl;
     }
 };
 
 int main() {
-    string name;
-    int units;
+    string name; int units;
     cin >> name >> units;
     ElectricityBill bill(name, units);
-    bill.calculateBill();
-    bill.display();
+    bill.calculateBill(); bill.display();
     return 0;
 }
 \end{code}
