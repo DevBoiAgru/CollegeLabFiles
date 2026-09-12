@@ -10,5 +10,5 @@ Create a `fonts` folder next to the `labstyle.sty` file, and copy the below file
 `courbd.ttf  courbi.ttf  couri.ttf  cour.ttf  timesbd.ttf  timesbi.ttf  timesi.ttf  times.ttf`
 
 
-Compile with lualatex.
+Compile with lualatex or use the compile bash script with relevant arguments.
 `lualatex -interaction=nonstopmode OOP.tex` or `lualatex -interaction=nonstopmode OS.tex`

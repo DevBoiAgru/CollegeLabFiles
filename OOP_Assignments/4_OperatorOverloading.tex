@@ -1,0 +1,507 @@
+
+\assignmenttitle
+    {LAB ASSIGNMENT 4}
+    {OPERATOR OVERLOADING}
+
+\aim{
+    To write C++ programs utilizing concepts of operator overloading.
+}
+
+\programs
+
+\program{
+    1. Create a class Polar that represents the points on the plain as polar coordinates (radius and angle). Create an overloaded +operator for addition of two Polar quantities. ``Adding'' two points on the plain can be accomplished by adding their X coordinates and then adding their Y coordinates. This gives the X and Y coordinates of the ``answer.'' Thus you'll need to convert two sets of polar coordinates to rectangular coordinates, add them, then convert the resulting rectangular representation back to polar.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+class Polar {
+    float radius, angle;
+public:
+    Polar(float r = 0, float a = 0) { radius = r; angle = a; }
+
+    Polar operator+(Polar other) {
+        float x = radius * cos(angle * 3.14159 / 180)
+                + other.radius * cos(other.angle * 3.14159 / 180);
+        float y = radius * sin(angle * 3.14159 / 180)
+                + other.radius * sin(other.angle * 3.14159 / 180);
+        return Polar(sqrt(x * x + y * y), atan2(y, x) * 180 / 3.14159);
+    }
+
+    void display() {
+        cout << "Radius: " << radius << endl;
+        cout << "Angle: " << angle << " degrees" << endl;
+    }
+};
+
+int main() {
+    float r1, a1, r2, a2;
+    cin >> r1 >> a1 >> r2 >> a2;
+    Polar result = Polar(r1, a1) + Polar(r2, a2);
+    cout << "Result:" << endl;
+    result.display();
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image34.png}
+
+\program{
+    2. Design a Currency class to represent money in rupees and paise. Overload the +, -, and * operators to perform arithmetic on two currency objects, and overload the == operator to check equality.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Currency {
+    int rupees, paise;
+
+    void convert() {
+        rupees += paise / 100;
+        paise = paise % 100;
+    }
+
+public:
+    Currency(int r = 0, int p = 0) {
+        rupees = r; paise = p; convert();
+    }
+
+    Currency operator+(Currency o) {
+        return Currency(rupees + o.rupees, paise + o.paise);
+    }
+    Currency operator-(Currency o) {
+        return Currency(0, (rupees * 100 + paise) - (o.rupees * 100 + o.paise));
+    }
+    Currency operator*(Currency o) {
+        return Currency(0, (rupees * 100 + paise) * (o.rupees * 100 + o.paise) / 100);
+    }
+    bool operator==(Currency o) {
+        return rupees == o.rupees && paise == o.paise;
+    }
+
+    void display() {
+        cout << "Rs. " << rupees << ".";
+        if (paise < 10) cout << "0";
+        cout << paise << endl;
+    }
+};
+
+int main() {
+    Currency a(100, 50), b(50, 75);
+    cout << "Addition: "; (a + b).display();
+    cout << "Subtraction: "; (a - b).display();
+    cout << "Multiplication: "; (a * b).display();
+    cout << "Equal: ";
+    cout << (a == b ? "Yes" : "No");
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image35.png}
+
+\program{
+    3. Create a Temperature class that stores values in Celsius. Overload the + operator to add two temperature objects, and define type conversion operators to convert Celsius to Fahrenheit (operator float()) and to an integer (rounded Celsius).
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Temperature {
+    float celsius;
+public:
+    Temperature(float value = 0) { celsius = value; }
+    Temperature operator+(Temperature o) {
+        return Temperature(celsius + o.celsius);
+    }
+    operator float() { return celsius * 9 / 5 + 32; }
+    operator int() { return (int)(celsius + 0.5); }
+    void display() { cout << celsius << " C" << endl; }
+};
+
+int main() {
+    Temperature result = Temperature(25) + Temperature(10);
+    cout << "Sum: ";
+    result.display();
+    float fahrenheit = result;
+    int roundedCelsius = result;
+    cout << "Fahrenheit: " << fahrenheit << endl;
+    cout << "Rounded Celsius: " << roundedCelsius << endl;
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image36.png}
+
+\program{
+    4. Implement an Item class with attributes name, price, and quantity. Overload the + operator to combine quantities of identical items and overload the * operator to calculate the total cost of the item (price * quantity).
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Item {
+    string name;
+    float price;
+    int quantity;
+public:
+    Item(string n = "", float p = 0, int q = 0) {
+        name = n; price = p; quantity = q;
+    }
+    Item operator+(Item o) {
+        if (name == o.name)
+            return Item(name, price, quantity + o.quantity);
+        return *this;
+    }
+    float operator*() { return price * quantity; }
+    void display() {
+        cout << name << " " << price << " " << quantity << endl;
+    }
+};
+
+int main() {
+    Item a("Pen", 10, 3), b("Pen", 10, 5);
+    Item total = a + b;
+    cout << "Combined item: ";
+    total.display();
+    cout << "Total cost: Rs. " << *total << endl;
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image37.png}
+
+\program{
+    5. Write a Date class with attributes day, month, and year. Overload the ++ operator to increment the date by one day, and overload the - operator to calculate the number of days between two dates.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Date {
+    int day, month, year;
+
+    int daysInMonth() {
+        if (month == 2)
+            return (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)) ? 29 : 28;
+        if (month == 4 || month == 6 || month == 9 || month == 11)
+            return 30;
+        return 31;
+    }
+
+public:
+    Date(int d = 1, int m = 1, int y = 2000) {
+        day = d; month = m; year = y;
+    }
+
+    Date operator++() {
+        day++;
+        if (day > daysInMonth()) {
+            day = 1;
+            month++;
+            if (month > 12) { month = 1; year++; }
+        }
+        return *this;
+    }
+
+    int operator-(Date o) {
+        return (year * 365 + month * 30 + day)
+             - (o.year * 365 + o.month * 30 + o.day);
+    }
+
+    void display() {
+        cout << day << "/" << month << "/" << year << endl;
+    }
+};
+
+int main() {
+    Date first(28, 2, 2024), second(1, 3, 2024);
+    cout << "Before increment: ";
+    first.display();
+    ++first;
+    cout << "After increment: ";
+    first.display();
+    cout << "Difference: " << second - first << " days" << endl;
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image38.png}
+
+\program{
+    6. Define a Position class with x and y coordinates. Overload the + operator to move the position by another position object, the == operator to compare two positions, and the << operator to display the position in a user-friendly format.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Position {
+    int x, y;
+public:
+    Position(int xVal = 0, int yVal = 0) { x = xVal; y = yVal; }
+    Position operator+(Position o) { return Position(x + o.x, y + o.y); }
+    bool operator==(Position o) { return x == o.x && y == o.y; }
+    friend ostream& operator<<(ostream& out, Position p) {
+        out << "(" << p.x << ", " << p.y << ")";
+        return out;
+    }
+};
+
+int main() {
+    Position a(10, 20), b(5, 8);
+    cout << "New position: " << a + b << endl;
+    if (a == b)
+        cout << "Positions are equal";
+    else
+        cout << "Positions are not equal";
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image39.png}
+
+\program{
+    7. Design a Book class with attributes title and copiesAvailable. Overload the -- operator to issue a book (decrement copies), the ++ operator to return a book (increment copies), and the == operator to check if two books are the same based on title.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Book {
+    string title;
+    int copiesAvailable;
+public:
+    Book(string t, int copies) {
+        title = t; copiesAvailable = copies;
+    }
+    Book operator--() {
+        if (copiesAvailable > 0) copiesAvailable--;
+        return *this;
+    }
+    Book operator++() {
+        copiesAvailable++;
+        return *this;
+    }
+    bool operator==(Book o) { return title == o.title; }
+    void display() {
+        cout << title << ": " << copiesAvailable << " copies" << endl;
+    }
+};
+
+int main() {
+    Book a("C++ Programming", 5), b("C++ Programming", 2);
+    cout << "Before issuing: ";
+    a.display();
+    --a;
+    cout << "After issuing: ";
+    a.display();
+    ++a;
+    cout << "After returning: ";
+    a.display();
+    if (a == b)
+        cout << "Books are the same";
+    else
+        cout << "Books are different";
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image40.png}
+
+\program{
+    8. Create a Polynomial class to store polynomial expressions. Overload the == operator to check if two polynomials are identical and the < operator to compare the degrees of two polynomials.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Polynomial {
+    int coefficients[10];
+    int degree;
+public:
+    Polynomial(int d) {
+        degree = d;
+        for (int i = 0; i <= degree; i++)
+            cin >> coefficients[i];
+    }
+    bool operator==(Polynomial o) {
+        if (degree != o.degree) return false;
+        for (int i = 0; i <= degree; i++)
+            if (coefficients[i] != o.coefficients[i])
+                return false;
+        return true;
+    }
+    bool operator<(Polynomial o) { return degree < o.degree; }
+};
+
+int main() {
+    cout << "Enter coefficients of first polynomial:" << endl;
+    Polynomial first(2);
+    cout << "Enter coefficients of second polynomial:" << endl;
+    Polynomial second(2);
+
+    if (first == second)
+        cout << "Polynomials are identical" << endl;
+    else
+        cout << "Polynomials are different" << endl;
+
+    if (first < second)
+        cout << "First polynomial has smaller degree";
+    else
+        cout << "First polynomial does not have smaller degree";
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image41.png}
+
+\program{
+    9. Implement a Matrix class and overload the () operator so that elements can be accessed using the syntax M(i, j) instead of traditional two-dimensional array indexing.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Matrix {
+    int matrix[10][10];
+    int rows, columns;
+public:
+    Matrix(int r, int c) {
+        rows = r; columns = c;
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < columns; j++)
+                cin >> matrix[i][j];
+    }
+    int& operator()(int i, int j) { return matrix[i][j]; }
+};
+
+int main() {
+    Matrix m(2, 3);
+    cout << "Element at (0, 1): " << m(0, 1) << endl;
+    m(1, 2) = 100;
+    cout << "Element at (1, 2): " << m(1, 2) << endl;
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image42.png}
+
+\program{
+    10. Develop a Cart class that stores multiple items. Overload the + operator to merge two carts into one, and the [] operator to directly access an item in the cart by index.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Cart {
+    string items[20];
+    int itemCount;
+public:
+    Cart() { itemCount = 0; }
+    void addItem(string item) { items[itemCount++] = item; }
+    Cart operator+(Cart o) {
+        Cart result = *this;
+        for (int i = 0; i < o.itemCount; i++)
+            result.addItem(o.items[i]);
+        return result;
+    }
+    string operator[](int i) { return items[i]; }
+    void display() {
+        for (int i = 0; i < itemCount; i++)
+            cout << items[i] << endl;
+    }
+};
+
+int main() {
+    Cart a, b;
+    a.addItem("Book");
+    a.addItem("Pen");
+    b.addItem("Bag");
+    b.addItem("Notebook");
+
+    Cart combined = a + b;
+    cout << "Combined cart:" << endl;
+    combined.display();
+    cout << "Item at index 2: " << combined[2] << endl;
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image43.png}
+
+\program{
+    11. Write a Fraction class with numerator and denominator. Overload the / operator to divide two fractions and provide a type conversion operator operator double() to convert a fraction into its decimal equivalent.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Fraction {
+    int numerator, denominator;
+public:
+    Fraction(int top = 0, int bottom = 1) {
+        numerator = top; denominator = bottom;
+    }
+    Fraction operator/(Fraction o) {
+        return Fraction(numerator * o.denominator, denominator * o.numerator);
+    }
+    operator double() { return (double)numerator / denominator; }
+    void display() { cout << numerator << "/" << denominator << endl; }
+};
+
+int main() {
+    Fraction result = Fraction(3, 4) / Fraction(2, 5);
+    cout << "Division: ";
+    result.display();
+    double decimal = result;
+    cout << "Decimal: " << decimal << endl;
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image44.png}

@@ -1,0 +1,92 @@
+
+\assignmenttitle
+    {LAB ASSIGNMENT - 02}
+    {UNIX SYSCALLS}
+
+\aim{To implement C++ programs using different UNIX system calls and demonstrate their purpose.}
+
+\appr{Computer System with LINUX/UNIX OS and a C++ compiler installed.}
+
+\sectionlabel{Theory:}
+A system call is a function provided by the OS through which a user program requests a service from the kernel. It acts as a bridge between user applications and the OS, allowing programs to perform tasks such as creating files, reading data, managing processes, and accessing hardware resources without directly accessing sensitive resources.
+
+\sectionlabel{Process System Calls:}
+\begin{itemize}
+\item \textbf{fork:} Creates a new child process by duplicating the calling parent process.
+\item \textbf{getpid:} Returns the process ID (PID) of the calling process.
+\item \textbf{wait:} Suspends execution of the calling process until one of its child processes terminates.
+\item \textbf{exec:} Replaces the current process with a new process image from a specified executable file.
+\item \textbf{exit:} Terminates the calling process normally and returns a status code to the parent.
+\end{itemize}
+
+\sectionlabel{Directory System Calls:}
+\begin{itemize}
+\item \textbf{opendir:} Opens a directory stream for reading directory entries.
+\item \textbf{readdir:} Reads the next directory entry from an open directory stream.
+\item \textbf{stat:} Retrieves information about a file such as size, permissions, and modification time.
+\item \textbf{close:} Closes a file and releases the associated system resources.
+\end{itemize}
+
+\programs
+
+\program{
+    2.1. Program 1 - Process System Calls (fork, getpid, wait, exec, exit):
+}
+
+\codelabel
+
+\begin{code}
+#include <unistd.h>
+#include <iostream>
+#include <sys/wait.h>
+
+int main() {
+    pid_t pid = fork();
+    if (pid == 0) {
+        std::cout << "Child PID: " << getpid() << std::endl;
+        execlp("ls", "ls", NULL);
+        exit(1);
+    } else {
+        wait(NULL);
+        std::cout << "Parent PID: " << getpid() << std::endl;
+    }
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OS/image1.png}
+
+\program{
+    2.2 Program 2 - Directory System Calls (opendir, readdir, stat, close):
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <dirent.h>
+
+int main() {
+    struct stat fileInfo;
+    stat(".", &fileInfo);
+    int fd = open(".", O_RDONLY);
+    close(fd);
+
+    DIR *dir = opendir(".");
+    struct dirent *entry = readdir(dir);
+
+    while (entry != NULL) {
+        std::cout << entry->d_name << std::endl;
+        entry = readdir(dir);
+    }
+    closedir(dir);
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OS/image2.png}
+
+\concl{The programs demonstrated the use of different system calls to carry out different functions successfully.}

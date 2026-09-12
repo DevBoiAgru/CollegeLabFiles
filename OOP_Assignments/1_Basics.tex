@@ -1,0 +1,266 @@
+
+\assignmenttitle
+    {LAB ASSIGNMENT 1}
+    {BASICS REVISION}
+
+\aim{
+    To write simple programs for revising basic C/C++ concepts.
+}
+
+\programs
+
+\program{
+    1. Write a program to rotate a matrix 90 degrees clockwise in C++.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n, a[10][10];
+    cin >> n;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            cin >> a[i][j];
+    for (int j = 0; j < n; j++) {
+        for (int i = n - 1; i >= 0; i--)
+            cout << a[i][j] << " ";
+        cout << endl;
+    }
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image1.png}
+
+\program{
+    2. Write a program to reverse a string using pointers.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    char str[] = "Hello, world!";
+    char *start = str, *end = str + strlen(str) - 1;
+    while (start < end) {
+        char temp = *start;
+        *start++ = *end;
+        *end-- = temp;
+    }
+    cout << str;
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image2.png}
+
+\program{
+    3. Write a program to find the longest word in the sentence.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+int main() {
+    string sentence = "This is a sentence with a long word.", word, longest;
+    for (char c : sentence + " ") {
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            word += c;
+        else {
+            if (word.length() > longest.length())
+                longest = word;
+            word = "";
+        }
+    }
+    cout << "Longest word is: " << longest;
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image3.png}
+
+\program{
+    4. Write a program to store user input in a file until EXIT, then display in reverse.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+#include <fstream>
+#include <vector>
+using namespace std;
+
+int main() {
+    ofstream file("file.txt");
+    vector<string> lines;
+    string text;
+    while (getline(cin, text) && text != "EXIT") {
+        file << text << endl;
+        lines.push_back(text);
+    }
+    for (int i = lines.size() - 1; i >= 0; i--)
+        cout << lines[i] << endl;
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image4.png}
+
+\program{
+    5. Write a program to find the missing number in an array.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n, sum = 0;
+    cin >> n;
+    for (int i = 1; i < n; i++) {
+        int x;
+        cin >> x;
+        sum += x;
+    }
+    cout << n * (n + 1) / 2 - sum;
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image5.png}
+
+\program{
+    6. Write a program to count ways to climb stairs 1 or 2 steps at a time.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+int countWays(int n) {
+    if (n <= 1) return 1;
+    return countWays(n - 1) + countWays(n - 2);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    cout << countWays(n);
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image6.png}
+
+\program{
+    7. Write a program to check if 2 strings are anagrams.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    string a, b;
+    cin >> a >> b;
+    sort(a.begin(), a.end());
+    sort(b.begin(), b.end());
+    cout << (a == b ? "Anagram" : "Not Anagram");
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image7.png}
+\outputimage[0.50\linewidth]{images/OOP/image8.png}
+
+\program{
+    8. Write a program to find the union and intersection of arrays.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n1, n2, a[20], b[20];
+    cin >> n1;
+    for (int i = 0; i < n1; i++) cin >> a[i];
+    cin >> n2;
+    for (int i = 0; i < n2; i++) cin >> b[i];
+
+    cout << "Intersection: ";
+    for (int i = 0; i < n1; i++)
+        for (int j = 0; j < n2; j++)
+            if (a[i] == b[j]) { cout << a[i] << " "; break; }
+
+    cout << endl << "Union: ";
+    for (int i = 0; i < n1; i++) cout << a[i] << " ";
+    for (int j = 0; j < n2; j++) {
+        bool found = false;
+        for (int i = 0; i < n1; i++)
+            if (b[j] == a[i]) found = true;
+        if (!found) cout << b[j] << " ";
+    }
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image9.png}
+
+\program{
+    9. Write a program to count frequency of each character (case insensitive).
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main() {
+    ifstream file("file.txt");
+    char ch;
+    int freq[26] = {0};
+    while (file.get(ch)) {
+        if (ch >= 'A' && ch <= 'Z') ch += 32;
+        if (ch >= 'a' && ch <= 'z') freq[ch - 'a']++;
+    }
+    for (int i = 0; i < 26; i++)
+        if (freq[i] > 0)
+            cout << char(i + 'a') << " : " << freq[i] << endl;
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image10.png}

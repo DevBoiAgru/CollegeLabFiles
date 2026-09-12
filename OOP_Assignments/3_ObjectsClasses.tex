@@ -1,0 +1,474 @@
+
+\assignmenttitle
+    {LAB ASSIGNMENT 3}
+    {INTRODUCTION TO OBJECT AND CLASSES}
+
+\aim{
+    To write C++ programs utilizing concepts of classes and objects.
+}
+
+\programs
+
+\program{
+    1. Create a class that includes a data member that holds a ``serial number'' for each object created from the class. That is, the first object created will be numbered 1, the second 2, and so on. To do this, you'll need another data member that records a count of how many objects have been created so far. (This member should apply to the class as a whole; not to individual objects. What keyword specifies this?) Then, as each object is created, its constructor can examine this count member variable to determine the appropriate serial number for the new object.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Item {
+    static int count;
+    int serialNumber;
+public:
+    Item() { serialNumber = ++count; }
+    void display() {
+        cout << "Serial Number: " << serialNumber << endl;
+    }
+};
+
+int Item::count = 0;
+
+int main() {
+    Item item1, item2, item3;
+    item1.display();
+    item2.display();
+    item3.display();
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image24.png}
+
+\program{
+    2. Imagine a tollbooth at a bridge. Cars passing by the booth are expected to pay a 50 cent toll. Mostly they do, but sometimes a car goes by without paying. The tollbooth keeps track of the number of cars that have gone by, and of the total amount of money collected. Model this tollbooth with a class called tollBooth. The two data items are a type unsigned int to hold the total number of cars, and a type double to hold the total amount of money collected. A constructor initializes both of these to 0. A member function called payingCar() increments the car total and adds 0.50 to the cash total. Another function, called nopayCar(), increments the car total but adds nothing to the cash total. Finally, a member function called display() displays the two totals. Make appropriate member functions const.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class tollBooth {
+    unsigned int totalCars;
+    double totalCash;
+public:
+    tollBooth() { totalCars = 0; totalCash = 0; }
+    void payingCar() { totalCars++; totalCash += 0.50; }
+    void nopayCar() { totalCars++; }
+    void display() const {
+        cout << "Total cars: " << totalCars << endl;
+        cout << "Total cash: $" << totalCash << endl;
+    }
+};
+
+int main() {
+    tollBooth booth;
+    char choice;
+    while (true) {
+        cin >> choice;
+        if (choice == 'p') booth.payingCar();
+        else if (choice == 'n') booth.nopayCar();
+        else if (choice == 'q') break;
+    }
+    booth.display();
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image25.png}
+
+\program{
+    3. Create a class that takes a 2D array (matrix) as input and implements a function to find the transpose of the matrix.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class Matrix {
+    int matrix[10][10];
+    int rows, columns;
+public:
+    void input() {
+        cin >> rows >> columns;
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < columns; j++)
+                cin >> matrix[i][j];
+    }
+    void transpose() {
+        cout << "Transpose:" << endl;
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++)
+                cout << matrix[i][j] << " ";
+            cout << endl;
+        }
+    }
+};
+
+int main() {
+    Matrix m;
+    m.input();
+    m.transpose();
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image26.png}
+
+\program{
+    4. Create a class ComplexNumber with functions to add and subtract two complex numbers.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class ComplexNumber {
+    float real, imaginary;
+public:
+    ComplexNumber(float r = 0, float i = 0) {
+        real = r; imaginary = i;
+    }
+    ComplexNumber add(ComplexNumber n) {
+        return ComplexNumber(real + n.real, imaginary + n.imaginary);
+    }
+    ComplexNumber subtract(ComplexNumber n) {
+        return ComplexNumber(real - n.real, imaginary - n.imaginary);
+    }
+    void display() {
+        cout << real;
+        if (imaginary >= 0)
+            cout << " + " << imaginary << "i";
+        else
+            cout << " - " << -imaginary << "i";
+        cout << endl;
+    }
+};
+
+int main() {
+    float r1, i1, r2, i2;
+    cin >> r1 >> i1 >> r2 >> i2;
+    ComplexNumber a(r1, i1), b(r2, i2);
+    cout << "Addition: ";
+    a.add(b).display();
+    cout << "Subtraction: ";
+    a.subtract(b).display();
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image27.png}
+
+\program{
+    5. In ocean navigation, locations are measured in degrees and minutes of latitude and longitude. Thus if you're lying off the mouth of Papeete Harbor in Tahiti, your location is 149 degrees 34.8 minutes west longitude, and 17 degrees 31.5 minutes south latitude. This is written as 149\textdegree{}34.8' W, 17\textdegree{}31.5' S. There are 60 minutes in a degree. (An older system also divided a minute into 60 seconds, but the modern approach is to use decimal minutes instead.) Longitude is measured from 0 to 180 degrees, east or west from Greenwich, England, to the international dateline in the Pacific. Latitude is measured from 0 to 90 degrees, north or south from the equator to the poles. Create a class angle that includes three member variables: an int for degrees, a float for minutes, and a char for the direction letter (N, S, E, or W). This class can hold either a latitude variable or a longitude variable. Write one member function to obtain an angle value (in degrees and minutes) and a direction from the user, and a second to display the angle value in 179\textdegree{}59.9' E format. Also write a three-argument constructor. Write a main() program that displays an angle initialized with the constructor, and then, within a loop, allows the user to input any angle value, and then displays the value. You can use the hex character constant `\textbackslash xF8', which usually prints a degree (\textdegree) symbol.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class angle {
+    int degrees;
+    float minutes;
+    char direction;
+public:
+    angle(int d = 0, float m = 0, char dir = 'N') {
+        degrees = d; minutes = m; direction = dir;
+    }
+    void getAngle() { cin >> degrees >> minutes >> direction; }
+    char getDirection() const { return direction; }
+    void display() const {
+        cout << degrees << "\xF8" << minutes << "' " << direction << endl;
+    }
+};
+
+int main() {
+    angle first(149, 34.8, 'W');
+    cout << "Initial angle: ";
+    first.display();
+
+    angle user;
+    while (true) {
+        user.getAngle();
+        if (user.getDirection() == 'X') break;
+        user.display();
+    }
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image28.png}
+
+\program{
+    6. Create a class BankAccount with members: account number, holder's name, balance, and interest rate. Include deposit, withdrawal, and interest calculation functions. Add a function to transfer money from one account object to another.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class BankAccount {
+    int accountNumber;
+    string holderName;
+    double balance, interestRate;
+public:
+    BankAccount(int num, string name, double amt, double rate) {
+        accountNumber = num;
+        holderName = name;
+        balance = amt;
+        interestRate = rate;
+    }
+    void deposit(double amt) { balance += amt; }
+    void withdraw(double amt) {
+        if (amt <= balance) balance -= amt;
+        else cout << "Insufficient balance" << endl;
+    }
+    void calculateInterest() { balance += balance * interestRate / 100; }
+    void transfer(BankAccount &other, double amt) {
+        if (amt <= balance) {
+            balance -= amt;
+            other.balance += amt;
+        }
+    }
+    void display() const {
+        cout << holderName << ": " << balance << endl;
+    }
+};
+
+int main() {
+    BankAccount a1(101, "John", 1000, 5), a2(102, "Alex", 500, 5);
+    a1.deposit(200);
+    a1.withdraw(100);
+    a1.calculateInterest();
+    a1.transfer(a2, 300);
+    a1.display();
+    a2.display();
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image29.png}
+
+\program{
+    7. Design a class ATM that stores an account PIN, balance, and transaction history. Add member functions to withdraw cash, deposit money, check balance, and print a mini statement. Ensure PIN authentication before any transaction.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class ATM {
+    int pin, transactionCount;
+    double balance;
+    string history[20];
+
+    bool checkPin(int enteredPin) { return enteredPin == pin; }
+
+public:
+    ATM(int userPin, double amount) {
+        pin = userPin;
+        balance = amount;
+        transactionCount = 0;
+    }
+
+    void withdraw(int enteredPin, double amount) {
+        if (!checkPin(enteredPin)) {
+            cout << "Wrong PIN" << endl;
+            return;
+        }
+        if (amount <= balance) {
+            balance -= amount;
+            history[transactionCount++] = "Withdrawal";
+            cout << "Cash withdrawn" << endl;
+        } else
+            cout << "Insufficient balance" << endl;
+    }
+
+    void deposit(int enteredPin, double amount) {
+        if (!checkPin(enteredPin)) {
+            cout << "Wrong PIN" << endl;
+            return;
+        }
+        balance += amount;
+        history[transactionCount++] = "Deposit";
+        cout << "Money deposited" << endl;
+    }
+
+    void checkBalance(int enteredPin) {
+        if (!checkPin(enteredPin)) {
+            cout << "Wrong PIN" << endl;
+            return;
+        }
+        cout << "Balance: " << balance << endl;
+    }
+
+    void miniStatement(int enteredPin) {
+        if (!checkPin(enteredPin)) {
+            cout << "Wrong PIN" << endl;
+            return;
+        }
+        cout << "Mini Statement:" << endl;
+        for (int i = 0; i < transactionCount; i++)
+            cout << history[i] << endl;
+    }
+};
+
+int main() {
+    ATM atm(1234, 5000);
+    atm.deposit(1234, 1000);
+    atm.withdraw(1234, 500);
+    atm.checkBalance(1234);
+    atm.miniStatement(1234);
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image30.png}
+
+\program{
+    8. Design a C++ program that defines a class FileSession to simulate the process of opening and closing files using constructors and destructors. The constructor should accept a file name as a parameter, display a message indicating that the file is being opened, and simulate resource allocation (such as initializing a file pointer or counter). The destructor should automatically display a message indicating that the file is being closed and simulate releasing resources when the object goes out of scope. Create multiple FileSession objects within the same scope to demonstrate that destructors are called in reverse order of creation. Additionally, illustrate the difference between stack allocation, where destructors are called automatically at the end of scope, and dynamic allocation using new and delete, where the destructor is called explicitly through deallocation. The program should clearly show how constructors and destructors help manage resources effectively.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class FileSession {
+    string fileName;
+public:
+    FileSession(string name) {
+        fileName = name;
+        cout << "Opening file: " << fileName << endl;
+    }
+    ~FileSession() {
+        cout << "Closing file: " << fileName << endl;
+    }
+};
+
+int main() {
+    cout << "Stack objects:" << endl;
+    {
+        FileSession file1("one.txt");
+        FileSession file2("two.txt");
+        FileSession file3("three.txt");
+        cout << "End of scope" << endl;
+    }
+
+    cout << endl << "Dynamic object:" << endl;
+    FileSession *file4 = new FileSession("four.txt");
+    cout << "Deleting dynamic object" << endl;
+    delete file4;
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image31.png}
+
+\program{
+    9. Develop a class TempStorage that simulates creating and deleting temporary files during a program's execution. The constructor should take a file name and display a message indicating that the temporary file is being created. The destructor should display a message that the file is being deleted. Create multiple objects in a function to show how temporary files are automatically deleted when the function ends. Add a case where temporary storage is dynamically created and explicitly deleted to free resources.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class TempStorage {
+    string fileName;
+public:
+    TempStorage(string name) {
+        fileName = name;
+        cout << "Creating temporary file: " << fileName << endl;
+    }
+    ~TempStorage() {
+        cout << "Deleting temporary file: " << fileName << endl;
+    }
+};
+
+void createTemporaryFiles() {
+    TempStorage file1("temp1.tmp");
+    TempStorage file2("temp2.tmp");
+    cout << "Function is running" << endl;
+}
+
+int main() {
+    cout << "Inside function:" << endl;
+    createTemporaryFiles();
+
+    cout << endl << "Dynamic temporary file:" << endl;
+    TempStorage *file3 = new TempStorage("temp3.tmp");
+    cout << "Deleting dynamically created file" << endl;
+    delete file3;
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image32.png}
+
+\program{
+    10. Create a class ElectricityBill with members for customer name, units consumed, and total bill amount. Add a function to calculate the bill based on units consumed and display the bill.
+}
+
+\codelabel
+
+\begin{code}
+#include <iostream>
+using namespace std;
+
+class ElectricityBill {
+    string customerName;
+    int units;
+    double totalBill;
+public:
+    ElectricityBill(string name, int usedUnits) {
+        customerName = name;
+        units = usedUnits;
+        totalBill = 0;
+    }
+    void calculateBill() { totalBill = units * 1.50; }
+    void display() {
+        cout << "Customer: " << customerName << endl;
+        cout << "Units: " << units << endl;
+        cout << "Total Bill: Rs. " << totalBill << endl;
+    }
+};
+
+int main() {
+    string name;
+    int units;
+    cin >> name >> units;
+    ElectricityBill bill(name, units);
+    bill.calculateBill();
+    bill.display();
+    return 0;
+}
+\end{code}
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OOP/image33.png}
