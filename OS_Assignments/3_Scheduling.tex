@@ -1,0 +1,153 @@
+
+\assignmenttitle
+    {LAB ASSIGNMENT - 03}
+    {SCHEDULING ALGORITHMS}
+
+\aim{To implement various scheduling algorithms in C++. (First come first serve, Shortest job first, Shortest running task first, Longest job first, Longest running task first, Non-preemptive priority based, Preemptive priority based, Round robin)}
+
+\appr{Computer System with LINUX/UNIX OS and a C++ compiler installed.}
+
+\sectionlabel{Theory:}
+\begin{itemize}
+\item\textbf{FCFS (First Come First Serve):} Executes processes in the order of their arrival time. It is non-preemptive, so a process runs until completion once it starts, thus can suffer from "Convoy Effect" where one long process blocks execution of multiple processes.
+\item\textbf{SJF (Shortest Job First):} Selects the process with the shortest burst time among the arrived processes. It is non-preemptive, so the selected process runs until completion.
+\item\textbf{SRTF (Shortest Remaining Time First):} Selects the process with the shortest remaining CPU time. It is preemptive, so a newly arrived process with a shorter remaining time can interrupt the current process.
+\item\textbf{LJF (Longest Job First):} Selects the process with the longest burst time among the arrived processes. It is non-preemptive, so the selected process runs until completion.
+\item\textbf{LRTF (Longest Remaining Time First):} Selects the process with the longest remaining CPU time. It is preemptive, so a process with a longer remaining time can interrupt the current process.
+\item\textbf{Priority Scheduling (Non-Preemptive):} Selects the highest-priority process among the arrived processes. Once execution starts, the process runs until completion.
+\item\textbf{Priority Scheduling (Preemptive):} Selects the process with the highest priority for execution. A newly arrived process with higher priority can interrupt the currently running process.
+\item \textbf{Round Robin:} Assigns each process a fixed time quantum and executes them in circular order. If a process does not finish within its quantum, it is placed at the back of the ready queue.
+\end{itemize}
+
+
+\programs
+
+\program{
+    Process class and helper functions:
+}
+\codelabel
+
+\program{
+    process.hpp:
+}
+\inputCodeFile{OS_Assignments/Code/SchedulingAlgorithms/process.hpp}
+\program{
+    helper.hpp:
+}
+\inputCodeFile{OS_Assignments/Code/SchedulingAlgorithms/helper.hpp}
+
+
+\program{
+    3.1. First Come First Serve:
+}
+
+\codelabel
+
+
+\inputCodeFile{OS_Assignments/Code/SchedulingAlgorithms/fcfs.cpp}
+
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OS/scheduling1.png}
+
+
+
+
+\program{
+    3.2. Shortest Job First:
+}
+
+\codelabel
+
+
+\inputCodeFile{OS_Assignments/Code/SchedulingAlgorithms/sjf.cpp}
+
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OS/scheduling2.png}
+
+
+
+\program{
+    3.3. Longest Running Task First:
+}
+
+\codelabel
+
+
+\inputCodeFile{OS_Assignments/Code/SchedulingAlgorithms/lrtf.cpp}
+
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OS/scheduling5.png}
+
+
+
+\program{
+    3.4. Shortest Running Task First:
+}
+
+\codelabel
+
+
+\inputCodeFile{OS_Assignments/Code/SchedulingAlgorithms/srtf.cpp}
+
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OS/scheduling3.png}
+
+
+
+\program{
+    3.5. Longest Job First:
+}
+
+\codelabel
+
+
+\inputCodeFile{OS_Assignments/Code/SchedulingAlgorithms/ljf.cpp}
+
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OS/scheduling4.png}
+
+
+
+\program{
+    3.6. Priority based non-preemptive:
+}
+
+\codelabel
+
+
+\inputCodeFile{OS_Assignments/Code/SchedulingAlgorithms/non_preemptive_priority.cpp}
+
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OS/scheduling6.1.png}
+\outputimage[0.50\linewidth]{images/OS/scheduling6.2.png}
+
+
+
+\program{
+    3.7. Priority based preemptive:
+}
+
+\codelabel
+
+
+\inputCodeFile{OS_Assignments/Code/SchedulingAlgorithms/preemptive_priority.cpp}
+
+
+\outputlabel
+\outputimage[0.50\linewidth]{images/OS/scheduling7.1.png}
+\outputimage[0.50\linewidth]{images/OS/scheduling7.2.png}
+
+\sectionlabel{Learning Outcomes:}
+\begin{itemize}
+\item{Working principles of different CPU scheduling algorithms.}
+\item{Implementation of preemptive and non-preemptive scheduling techniques.}
+\item{Compare scheduling algorithms based on their execution order and average turnaround and waiting times.}
+\end{itemize}
+
+\concl{Various CPU scheduling algorithms, including FCFS, SJF, SRTF, LJF, LRTF, Priority Scheduling, and Round Robin were implemented successfully.}
