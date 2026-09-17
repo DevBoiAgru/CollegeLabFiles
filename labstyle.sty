@@ -115,28 +115,32 @@
 }
 
 
-% ============================================================
-% FOOTER
-% ============================================================
-
 % Subject code command (default: CSMCXXXX)
 \newcommand{\subjectcode}{CSMCXXXX}
-
 % Roll Number command (default: 25BTCS006)
 \newcommand{\rollnumber}{25BTCS006}
+% Name command (default: Gigachad)
+\newcommand{\studname}{AGRIM BUDAKOTI}
+
+% ============================================================
+% HEADER AND FOOTER
+% ============================================================
 
 \pagestyle{fancy}
 
 \fancyhf{}
 
-\fancyfoot[L]{\subjectcode}
+% HEADER
+% \fancyhead[L]{\rollnumber}
+% \fancyhead[C]{Center Header}
+\fancyhead[R]{\rollnumber \hspace{0.1cm} | \hspace{0.1cm} \studname}
 
+% FOOTER
+% \fancyfoot[L]{\subjectcode}
 \fancyfoot[C]{\thepage}
-
-\fancyfoot[R]{\rollnumber}
+% \fancyfoot[R]{\rollnumber}
 
 \renewcommand{\headrulewidth}{0pt}
-
 \renewcommand{\footrulewidth}{0pt}
 
 \setlength{\footskip}{0.5in}
